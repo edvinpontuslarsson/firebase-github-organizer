@@ -4,6 +4,8 @@
   "description": "[wiki](https://github.com/1dv612/el223na-examination/wiki)",
   "main": "index.js",
   "scripts": {
+    "start": "webpack-dev-server",
+    "build": "webpack",
     "test": "npm test"
   },
   "keywords": [
@@ -12,5 +14,17 @@
     "github"
   ],
   "author": "Edvin Larsson",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "css-loader": "^0.28.4",
+    "file-loader": "^0.11.2",
+    "standard": "*",
+    "standard-loader": "^6.0.1",
+    "style-loader": "^0.18.2",
+    "webpack": "^3.0.0"
+  },
+  "devDependencies": {
+    "webpack-cli": "^3.2.3",
+    "webpack-dev-server": "^3.0.0"
+  }
 }
