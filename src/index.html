@@ -12,6 +12,31 @@
 
     <h1 id="main-header"></h1>
 
+
+    <!-- TODO: put firebase stuff js file -->
+    <script src="https://www.gstatic.com/firebasejs/5.8.3/firebase.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/5.8.2/firebase-app.js"></script>
+
+    <!-- Adds additional services that you want to use -->
+    <script src="https://www.gstatic.com/firebasejs/5.8.2/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.8.2/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.8.2/firebase-functions.js"></script>
+
+    <script>
+    // Initializes Firebase
+    const config = {
+        apiKey: "AIzaSyBDrSwWXn2AklmSJtlGTJ37jpUXorwyv1c",
+        authDomain: "gitedvinhub.firebaseapp.com",
+        databaseURL: "https://gitedvinhub.firebaseio.com",
+        projectId: "gitedvinhub",
+        storageBucket: "gitedvinhub.appspot.com",
+        messagingSenderId: "821443809987"
+    }
+
+    firebase.initializeApp(config)
+    </script>
+
     <script src="build.js"></script>
     
 </body>
