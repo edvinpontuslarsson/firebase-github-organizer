@@ -6,5 +6,5 @@ const greet = greeting => {
 }
 
 ;(() => {
-  greet('Bonjour le Monde!')
+  greet('你好世界')
 })()
