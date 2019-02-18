@@ -4,4 +4,7 @@
 
 Project is live at: https://gitedvinhub.firebaseapp.com
 
+To generate main.js in dist: <br>
+npx webpack
+
 $ firebase serve   # Start development server
