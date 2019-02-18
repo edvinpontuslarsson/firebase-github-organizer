@@ -1,0 +1,16 @@
+{
+  "name": "gitedvinhub",
+  "version": "1.0.0",
+  "description": "[wiki](https://github.com/1dv612/el223na-examination/wiki)",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "keywords": [
+    "JavaScript",
+    "firebase",
+    "github"
+  ],
+  "author": "Edvin Larsson",
+  "license": "ISC"
+}
