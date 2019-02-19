@@ -4,7 +4,8 @@
   "description": "[wiki](https://github.com/1dv612/el223na-examination/wiki)",
   "private": true,
   "scripts": {
-    "build": "webpack --config webpack.config.js",
+    "start": "webpack-dev-server",
+    "build": "npx webpack",
     "test": "npm test"
   },
   "keywords": [
@@ -16,6 +17,10 @@
   "license": "ISC",
   "devDependencies": {
     "webpack": "^4.29.5",
-    "webpack-cli": "^3.2.3"
+    "webpack-cli": "^3.2.3",
+    "webpack-dev-server": "^3.1.14"
+  },
+  "dependencies": {
+    "firebase": "^5.8.3"
   }
 }

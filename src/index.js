@@ -1,6 +1,7 @@
 'use strict'
 
-const init = require('./init/init')
+import init from './init/init'
+import storage from './storage/storage'
 
 const greet = greeting => {
   const header = document.getElementById('main-header')
@@ -8,6 +9,7 @@ const greet = greeting => {
 }
 
 ;(() => {
-  init()
-  greet('Bonjour le Monde!')
+  const app = init()
+  storage(app)
+  greet('Hej världen!')
 })()

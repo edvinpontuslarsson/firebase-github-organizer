@@ -5,6 +5,6 @@
 Project is live at: https://gitedvinhub.firebaseapp.com
 
 To generate main.js in dist: <br>
-npx webpack
+npm run build
 
-$ firebase serve   # Start development server
+$ firebase serve   # starts development server, (you might have to use sudo)
