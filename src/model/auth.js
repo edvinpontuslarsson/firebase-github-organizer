@@ -5,14 +5,13 @@ import 'firebase/auth'
 
 let userData
 
-const isLoggedIn = () => {
+const isLoggedIn = () => new Promise(resolve => {
     firebase.auth().onAuthStateChanged(user => {
         userData = user
-        console.log(user)
+        resolve(userData !== null)
     })
+})
 
-    return userData !== null
-}
 
 const login = () => {
     const provider = new firebase.auth.GithubAuthProvider()

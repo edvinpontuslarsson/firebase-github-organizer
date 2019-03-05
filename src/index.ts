@@ -32,9 +32,10 @@ const initializeLogout = () => {
   console.log(isLoggedIn)
   initializeLogin()
   initializeLogout()
-  console.log('provider data ' + auth.getUserData())
-
-  if (auth.getUserData().providerData) console.log('Mm')
+  
+  if (isLoggedIn) console.log(
+    auth.getUserData().providerData
+  )
 
   greet('Hej världen!')
 })()
