@@ -9,31 +9,35 @@ const greet = greeting => {
   header.innerText = greeting
 }
 
+// redirects back later, store in firebase auth
 const initializeLogin = () => {
   document.getElementById('login-btn')  
     .addEventListener('click', async () => {
-      await auth.login()
-
-      document.getElementById('status-info')
-        .innerText = 'You are now logged in'
-      
-      initializeLogout()
+      try {
+        /*await*/ auth.login()
+      } catch (error) {
+        
+      }
   })
 }
 
 const initializeLogout = () => {
   document.getElementById('logout-btn')
     .addEventListener('click', async () => {
-      await auth.logOut()
+      try {
+        await auth.logOut()
+      } catch (error) {
+        
+      }
 
       document.getElementById('status-info')
         .innerText = 'You are now logged out'
     })
 }
 
-;(() => {
+;(async () => {
   init.initialize()
   initializeLogin()
   initializeLogout()
-  greet('Hej världen!') 
+  greet('Hej världen!')
 })()
