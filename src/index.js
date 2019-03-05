@@ -1,22 +1,39 @@
 'use strict'
 
-import init from './init/init'
-import storage from './storage/storage'
-import auth from './auth/auth'
+import init from './model/init'
+import storage from './model/storage'
+import auth from './model/auth'
 
 const greet = greeting => {
   const header = document.getElementById('main-header')
   header.innerText = greeting
 }
 
-const activateLoginBtn = () => {
-  const btn = document.getElementById('login-btn')
-  btn.addEventListener('click', () => { auth() })
+const initializeLogin = () => {
+  document.getElementById('login-btn')  
+    .addEventListener('click', async () => {
+      await auth.login()
+
+      document.getElementById('status-info')
+        .innerText = 'You are now logged in'
+      
+      initializeLogout()
+  })
+}
+
+const initializeLogout = () => {
+  document.getElementById('logout-btn')
+    .addEventListener('click', async () => {
+      await auth.logOut()
+
+      document.getElementById('status-info')
+        .innerText = 'You are now logged out'
+    })
 }
 
 ;(() => {
-  const app = init()
-  storage(app) // TODO: handle storage
-  activateLoginBtn()
-  greet('Hej världen!')
+  init.initialize()
+  initializeLogin()
+  initializeLogout()
+  greet('Hej världen!') 
 })()

@@ -1,3 +1,13 @@
 body {
     background-color: lightgray;
+    margin-left: 15%;
+    margin-right: 15%;
+}
+
+button {
+    background-color: green;
+    color: white;
+    border-radius: 5px;
+    padding: 5px 15px;
+    cursor: pointer;
 }
