@@ -4,7 +4,7 @@ import init from './model/init'
 import storage from './model/storage'
 import auth from './model/auth'
 
-const greet = greeting => {
+const greet = (greeting: string) => {
   const header = document.getElementById('main-header')
   header.innerText = greeting
 }
@@ -12,30 +12,22 @@ const greet = greeting => {
 // redirects back later, store in firebase auth
 const initializeLogin = () => {
   document.getElementById('login-btn')  
-    .addEventListener('click', async () => {
-      try {
-        /*await*/ auth.login()
-      } catch (error) {
-        
-      }
+    .addEventListener('click', () => {
+      auth.login()
   })
 }
 
 const initializeLogout = () => {
   document.getElementById('logout-btn')
-    .addEventListener('click', async () => {
-      try {
-        await auth.logOut()
-      } catch (error) {
-        
-      }
+    .addEventListener('click', () => {
+      auth.logOut()
 
       document.getElementById('status-info')
         .innerText = 'You are now logged out'
     })
 }
 
-;(async () => {
+;(() => {
   init.initialize()
   initializeLogin()
   initializeLogout()
