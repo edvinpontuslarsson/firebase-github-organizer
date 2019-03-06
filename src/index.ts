@@ -11,8 +11,16 @@ const greet = (greeting: string) => {
 // redirects back later, store in firebase auth
 const initializeLogin = () => {
   document.getElementById('login-btn')  
-    .addEventListener('click', () => {
-      auth.login()
+    .addEventListener('click', async () => {
+      await auth.login()
+
+      const userData = await auth.getUserData()
+
+      const header = document.getElementById('main-header')
+      header.innerText = `Welcome ${userData[0].displayName}!`
+
+      document.getElementById('profile-pic')
+        .setAttribute('src', userData[0].photoURL)
   })
 }
 
@@ -28,19 +36,8 @@ const initializeLogout = () => {
 
 const initializeTokenDisplay = () => {
   document.getElementById('display-token')
-    .addEventListener('click', async () => {
-      const userData = await auth.getUserData()
-      console.log(userData)
-
-      // Also changes header & adds img
-
-      const header = document.getElementById('main-header')
-      header.innerText = `Welcome ${userData[0].displayName}!`
-
-      document.getElementById('profile-pic')
-        .setAttribute('src', userData[0].photoURL)
-
-      const token: string = await auth.getTokenPromise()
+    .addEventListener('click', async () => {   
+      const token = auth.getAccessToken()
 
       document.getElementById('acess-token')
         .innerText = token
@@ -49,8 +46,6 @@ const initializeTokenDisplay = () => {
 
 ;(async () => {
   init.initialize()
-  const isLoggedIn: boolean = await auth.isLoggedIn()
-  console.log('is logged in? ' + isLoggedIn)
   initializeLogin()
   initializeLogout()
   initializeTokenDisplay()
