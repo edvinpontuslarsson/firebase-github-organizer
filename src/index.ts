@@ -8,6 +8,19 @@ const greet = (greeting: string) => {
   header.innerText = greeting
 }
 
+const initializeGetGithubData = () => {
+  document.getElementById('get-gh-data')
+    .addEventListener('click', async () => {
+      const response = 
+        await window.fetch('https://api.github.com', {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/vnd.github.v3+json'
+          }
+        })
+    })
+}
+
 const initializeLogin = () => {
   document.getElementById('login-btn')  
     .addEventListener('click', async () => {
@@ -15,11 +28,17 @@ const initializeLogin = () => {
 
       const userData = await auth.getUserData()
 
+      console.log(userData)
+
+      // TODO: return [0] from auth, have interface for userData
+
       const header = document.getElementById('main-header')
       header.innerText = `Welcome ${userData[0].displayName}!`
 
       document.getElementById('profile-pic')
         .setAttribute('src', userData[0].photoURL)
+
+      initializeGetGithubData()
   })
 }
 
