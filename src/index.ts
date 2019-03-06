@@ -11,13 +11,18 @@ const greet = (greeting: string) => {
 const initializeGetGithubData = () => {
   document.getElementById('get-gh-data')
     .addEventListener('click', async () => {
-      const response = 
-        await window.fetch('https://api.github.com', {
+      const url = 
+        `https://api.github.com/users/${auth.getUsername()}/repos`
+
+      const response = await window.fetch(url, {
           method: 'GET',
           headers: {
-            'Accept': 'application/vnd.github.v3+json'
+            'Accept': 'application/vnd.github.v3+json',
+            'Authorization': `token ${auth.getAccessToken()}`
           }
         })
+
+      console.log(await response.json())
     })
 }
 
@@ -27,8 +32,6 @@ const initializeLogin = () => {
       await auth.login()
 
       const userData = await auth.getUserData()
-
-      console.log(userData)
 
       // TODO: return [0] from auth, have interface for userData
 
