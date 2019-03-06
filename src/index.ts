@@ -8,7 +8,6 @@ const greet = (greeting: string) => {
   header.innerText = greeting
 }
 
-// redirects back later, store in firebase auth
 const initializeLogin = () => {
   document.getElementById('login-btn')  
     .addEventListener('click', async () => {
@@ -34,20 +33,9 @@ const initializeLogout = () => {
     })
 }
 
-const initializeTokenDisplay = () => {
-  document.getElementById('display-token')
-    .addEventListener('click', async () => {   
-      const token = auth.getAccessToken()
-
-      document.getElementById('acess-token')
-        .innerText = token
-    })
-}
-
 ;(async () => {
   init.initialize()
   initializeLogin()
   initializeLogout()
-  initializeTokenDisplay()
   greet('Hej världen!')
 })()
