@@ -29,9 +29,18 @@ const initializeLogout = () => {
 const initializeTokenDisplay = () => {
   document.getElementById('display-token')
     .addEventListener('click', async () => {
-      const token = await auth.getTokenPromise()
+      const userData = await auth.getUserData()
+      console.log(userData)
 
-      console.log(token)
+      // Also changes header & adds img
+
+      const header = document.getElementById('main-header')
+      header.innerText = `Welcome ${userData[0].displayName}!`
+
+      document.getElementById('profile-pic')
+        .setAttribute('src', userData[0].photoURL)
+
+      const token: string = await auth.getTokenPromise()
 
       document.getElementById('acess-token')
         .innerText = token

@@ -25,7 +25,7 @@ const login = async () => {
 /**
  * @returns {Object}
  */
-const getUserData = () => userData
+const getUserData = () => firebase.auth().currentUser.providerData // userData
 
 const getTokenPromise = () => firebase.auth().currentUser.getIdToken()
 
