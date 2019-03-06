@@ -26,11 +26,24 @@ const initializeLogout = () => {
     })
 }
 
+const initializeTokenDisplay = () => {
+  document.getElementById('display-token')
+    .addEventListener('click', async () => {
+      const token = await auth.getTokenPromise()
+
+      console.log(token)
+
+      document.getElementById('acess-token')
+        .innerText = token
+    })
+}
+
 ;(async () => {
   init.initialize()
   const isLoggedIn: boolean = await auth.isLoggedIn()
   console.log('is logged in? ' + isLoggedIn)
   initializeLogin()
   initializeLogout()
+  initializeTokenDisplay()
   greet('Hej världen!')
 })()

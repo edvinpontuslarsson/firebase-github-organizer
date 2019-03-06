@@ -12,14 +12,22 @@ const isLoggedIn = () => new Promise(resolve => {
     })
 })
 
+// test sign out every time, maybe only if logged in
+
+// has to log in at refresh
 
 const login = async () => {
     const provider = new firebase.auth.GithubAuthProvider()
     userData = await firebase.auth().signInWithPopup(provider)
-    console.log(userData.credential.accessToken)
+    // console.log(userData.credential.accessToken)
 }
 
+/**
+ * @returns {Object}
+ */
 const getUserData = () => userData
+
+const getTokenPromise = () => firebase.auth().currentUser.getIdToken()
 
 /**
  * Asynchronous
@@ -30,5 +38,6 @@ export default {
     isLoggedIn,
     login,
     getUserData,
+    getTokenPromise,
     logOut
 }
