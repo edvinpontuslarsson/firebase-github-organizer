@@ -11,8 +11,8 @@ const greet = (greeting: string) => {
 // redirects back later, store in firebase auth
 const initializeLogin = () => {
   document.getElementById('login-btn')  
-    .addEventListener('click', async () => {
-      await auth.login()
+    .addEventListener('click', () => {
+      auth.login()
   })
 }
 
@@ -29,13 +29,8 @@ const initializeLogout = () => {
 ;(async () => {
   init.initialize()
   const isLoggedIn: boolean = await auth.isLoggedIn()
-  console.log(isLoggedIn)
+  console.log('is logged in? ' + isLoggedIn)
   initializeLogin()
   initializeLogout()
-  
-  if (isLoggedIn) console.log(
-    auth.getUserData().providerData
-  )
-
   greet('Hej världen!')
 })()

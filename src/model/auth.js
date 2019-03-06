@@ -13,15 +13,16 @@ const isLoggedIn = () => new Promise(resolve => {
 })
 
 
-const login = () => {
+const login = async () => {
     const provider = new firebase.auth.GithubAuthProvider()
-    firebase.auth().signInWithRedirect(provider)
+    userData = await firebase.auth().signInWithPopup(provider)
+    console.log(userData.credential.accessToken)
 }
 
 const getUserData = () => userData
 
 /**
- * @returns {Promise}
+ * Asynchronous
  */
 const logOut = () => firebase.auth().signOut()
 
