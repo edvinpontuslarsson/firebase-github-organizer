@@ -26,7 +26,7 @@ router.add('about', () => {
 router.addUriListener()
 
 // when user clicks link, prevent default & below
-router.navigateTo('hello/World')
+router.navigateTo('hello/World') // can make it dynamically
 
 const greet = greeting => {
   const header = document.getElementById('main-header')
