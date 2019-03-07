@@ -18,10 +18,24 @@
 
         <button id="logout-btn">Log out</button>
 
+        <p id="status-info"></p>
+
         <button id="get-gh-data">Get Github data</button>
 
-        <p id="status-info"></p>
+        <div id="orgs">
+
+        </div>
     </section>
+
+    <template id="organization">
+        <div class="organization">
+            <p id="org-name"></p>
+            <!-- Add id & link dynamically -->
+            <p><a href="#"></a></p> 
+        </div>
+    </template>
+
+    <!-- if user clicks on org link, remove orgs div & list that -->
 
     <script src="bundle.js"></script>
 </body>

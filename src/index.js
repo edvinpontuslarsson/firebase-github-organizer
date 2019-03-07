@@ -2,6 +2,31 @@
 
 import init from './model/init'
 import auth from './model/auth'
+import Router from 'vanilla-router'
+
+var router = new Router({
+  mode: 'history',
+  page404: resource => {
+      console.log('"/' + resource + '" Page not found');
+  }
+})
+
+router.add('', function () {
+  console.log('Home page')
+})
+
+router.add('hello/(:any)', resource => {
+  console.log('Hello, ' + resource)
+})
+
+router.add('about', () => {
+  console.log('About Page')
+})
+
+router.addUriListener()
+
+// when user clicks link, prevent default & below
+router.navigateTo('hello/World')
 
 const greet = greeting => {
   const header = document.getElementById('main-header')
@@ -14,9 +39,7 @@ const initializeGetGithubData = () => {
       const username = auth.getUsername()
       const token = auth.getAccessToken()
 
-      const url = 
-        // `https://api.github.com/users/${username}/orgs`
-        'https://api.github.com/user/orgs'
+      const url = 'https://api.github.com/user/orgs'
 
       const response = await window.fetch(url, {
           method: 'GET',
