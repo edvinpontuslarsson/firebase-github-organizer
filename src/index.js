@@ -3,7 +3,7 @@
 import init from './model/init'
 import auth from './model/auth'
 
-const greet = (greeting: string) => {
+const greet = greeting => {
   const header = document.getElementById('main-header')
   header.innerText = greeting
 }
@@ -11,17 +11,21 @@ const greet = (greeting: string) => {
 const initializeGetGithubData = () => {
   document.getElementById('get-gh-data')
     .addEventListener('click', async () => {
+      const username = auth.getUsername()
+      const token = auth.getAccessToken()
+
       const url = 
-        `https://api.github.com/users/${auth.getUsername()}/repos`
+        // `https://api.github.com/users/${username}/orgs`
+        'https://api.github.com/user/orgs'
 
       const response = await window.fetch(url, {
           method: 'GET',
           headers: {
             'Accept': 'application/vnd.github.v3+json',
-            'Authorization': `token ${auth.getAccessToken()}`
+            'Authorization': `token ${token}`
           }
         })
-
+      
       console.log(await response.json())
     })
 }

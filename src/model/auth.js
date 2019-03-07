@@ -12,6 +12,8 @@ const getAccessToken = () => accessToken
 
 const login = async () => {
     const provider = new firebase.auth.GithubAuthProvider()
+    provider.addScope('admin:org')
+
     const userData = await firebase.auth().signInWithPopup(provider)
     
     username = userData.additionalUserInfo.username
