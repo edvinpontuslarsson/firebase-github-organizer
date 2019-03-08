@@ -22,23 +22,36 @@ const orgs = []
 const getOrgs = () => orgs
 
 const fetchOrgs = () =>
-    new Promise(async (resolve, reject) => {
-      const token = auth.getAccessToken()
-
+    new Promise(async resolve => {
       const orgsURL = 'https://api.github.com/user/orgs'
 
       const orgsRes = await window.fetch(orgsURL, {
           method: 'GET',
-          headers: {
-            'Accept': 'application/vnd.github.v3+json',
-            'Authorization': `token ${token}`
-          }
+          headers: getAuthHeaders()
         })
 
       resolve(orgsRes.json())
     })
 
+const fetchOneOrg = org =>
+    new Promise(async resolve => {
+      const orgRes = await window.fetch(org.url, {
+        method: 'GET',
+        headers: getAuthHeaders()
+      })
+      resolve(orgRes.json())
+    })
+
+const getAuthHeaders = () => {
+  const token = auth.getAccessToken()
+  return {
+    'Accept': 'application/vnd.github.v3+json',
+    'Authorization': `token ${token}`
+  }
+}
+
 export default {
   fetchOrgs,
-  getOrgs
+  getOrgs,
+  fetchOneOrg
 }

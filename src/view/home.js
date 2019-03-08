@@ -3,6 +3,7 @@
 import xss from 'xss'
 import contentSection from './contentSection'
 import menu from './menu'
+import orgView from './organization'
 
 const renderHomeView = (userData, orgs) => {
     const section = contentSection.getClearedContentSection()
@@ -16,7 +17,7 @@ const renderHomeView = (userData, orgs) => {
         homeDiv.firstChild
     )
 
-    appendOrgs(orgs)
+    appendOrgs(userData, orgs)
 }
 
 const getHomeView = userData => 
@@ -24,11 +25,11 @@ const getHomeView = userData =>
     <h1>Welcome ${xss(userData.displayName)}!</h1>
     <img src="${userData.photoURL}" alt="Profile picture" id="profile-pic">
     <h2>Your organisations:</h2>
-    <div id="orgs-div"></div>
+    <div id="all-orgs-div"></div>
     `
 
-const appendOrgs = allOrgs => {
-    const orgsDiv = document.getElementById('orgs-div')
+const appendOrgs = (userData, allOrgs) => {
+    const allOrgsDiv = document.getElementById('all-orgs-div')
 
     allOrgs.forEach(org => {
         const orgDiv = document.createElement('div')
@@ -49,8 +50,7 @@ const appendOrgs = allOrgs => {
 
         link.addEventListener('click', event => {
             event.preventDefault()
-            console.log(event)
-            renderOrgView(allOrgs, org)
+            orgView.renderOrgView(userData, allOrgs, org)
         })
 
         const description = document.createElement('p')
@@ -61,12 +61,8 @@ const appendOrgs = allOrgs => {
         orgDiv.appendChild(header)
         orgDiv.appendChild(description)
 
-        orgsDiv.appendChild(orgDiv)
+        allOrgsDiv.appendChild(orgDiv)
     })
-}
-
-const renderOrgView = async (allOrgs, org) => {
-    // TODO: render view for org
 }
 
 export default {
