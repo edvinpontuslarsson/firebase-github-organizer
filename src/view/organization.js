@@ -7,17 +7,21 @@ import githubDAL from '../model/githubDAL'
 const renderOrgView = async (userData, allOrgs, org) => {
     const section = contentSection.getClearedContentSection()
 
-    const orgDiv = document.createElement('div')
-    orgDiv.innerHTML = '<p>Under construction</p>'
+    const repos = await githubDAL.fetchOrgRepos(org)
+
+    const orgDiv = getOrgDiv(userData, allOrgs, org, repos)
     section.appendChild(orgDiv)
 
     orgDiv.insertBefore(
         menu.getMenuDiv(userData, allOrgs),
         orgDiv.firstChild
     )
+}
 
-    const orgData = await githubDAL.fetchOrgRepos(org)
-    console.log(orgData)
+const getOrgDiv = (userData, allOrgs, org, repos) => {
+    const orgDiv = document.createElement('div')
+
+    
 }
 
 export default { renderOrgView }

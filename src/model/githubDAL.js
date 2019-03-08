@@ -4,17 +4,13 @@ import auth from './auth'
 
 /**
  * @returns {Array}
- * Objects with these properties:
+ * Objects, some properties:
     avatar_url: org avatar,
     description: -,
-    events_url: -,
     hooks_url: -,
-    id: -,
     issues_url: -,
     login: title of org,
     members_url: -,
-    node_id: -,
-    public_members_url: -,
     repos_url: -,
     url: url to this org
  */
@@ -32,8 +28,23 @@ const fetchOrgs = () =>
 
 /**
  * @param {Object} org object
- * @returns {Object} object, example props:
- * 
+ * @returns {Object} objects, some props:
+ * collaborators_url: -,
+ * commits_url: -,
+ * contributors_url: -,
+ * created_at: -,
+ * description: -,
+ * has_issues: bool,
+ * issues_url: -,
+ * hooks_url: -,
+ * language: programming language,
+ * license: { name: - }
+ * name: name of repo,
+ * open_issues_count: int
+ * private: bool,
+ * updated_at: Date,
+ * releases_url: -
+ * url: url to this repo
  */
 const fetchOrgRepos = org =>
     new Promise(async resolve => {
