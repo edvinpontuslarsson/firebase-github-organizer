@@ -6,7 +6,7 @@ import auth from '../model/auth'
 
 // can later append to this div
 
-const getMenuDiv = (userData, ghData) => {
+const getMenuDiv = (userData, orgs) => {
     const logOutBtn = document.createElement('button')
     logOutBtn.innerText = 'Log out'
     logOutBtn.addEventListener('click', logOut)
@@ -14,7 +14,7 @@ const getMenuDiv = (userData, ghData) => {
     const homeBtn = document.createElement('button')
     homeBtn.innerText = 'Home'
     homeBtn.addEventListener('click', () => {
-        home.renderHomeView(userData, ghData)
+        home.renderHomeView(userData, orgs)
     })
     
     const div = document.createElement('div')

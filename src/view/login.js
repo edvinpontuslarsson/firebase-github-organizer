@@ -23,9 +23,9 @@ const login = async () => {
     await auth.login()
 
     const userData = await auth.getUserData()
-    const ghData = await githubDAL.fetchData()
-
-    home.renderHomeView(userData, ghData)
+    const orgs = await githubDAL.fetchOrgs()
+    
+    home.renderHomeView(userData, orgs)
 }
 
 export default { renderLoginView }
