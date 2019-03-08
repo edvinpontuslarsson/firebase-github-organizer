@@ -4,7 +4,7 @@ import init from './model/init'
 import loginView from './view/login'
 import githubDAL from './model/githubDAL'
 
-;(async () => {
+  ;(async () => {
   init.initialize()
   loginView.renderLoginView()
 })()

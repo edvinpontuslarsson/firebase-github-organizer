@@ -6,5 +6,5 @@ import 'firebase/storage'
  * Storage module
  */
 export default app => {
-    app.storage().ref('path')
+  app.storage().ref('path')
 }
