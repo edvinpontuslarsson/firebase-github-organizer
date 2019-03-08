@@ -2,7 +2,10 @@
 
 import xss from 'xss'
 
-const renderOrgsView = (userData, orgs) => {
+const renderHomeView = (userData, ghData) => {
+    const content = document.getElementById('content-section')
+    content.innerHTML = 'Please stand by'
+    
     // remove log in btn, apppend log out
 
     // <button id="logout-btn">Log out</button>
@@ -10,18 +13,18 @@ const renderOrgsView = (userData, orgs) => {
     // getByID.innerhtml = getView
 }
 
-const getOrgsView = (userData, orgs) => 
+const getHomeView = (userData, ghData) => 
     `
     <h1>Welcome ${xss(userData.displayName)}!</h1>
     <img src="${userData.photoURL}" alt="Profile picture" id="profile-pic">
     <h2>Your organisations:</h2>
-    ${getOrgDivs(orgs)}
+    ${getOrgDivs(ghData)}
     `
 
-const getOrgDivs = orgs => {
+const getOrgDivs = ghData => {
     const divStart = '<div>'
 
-    orgs.forEach(org => {
+    ghData.forEach(item => {
         divStart += `
             <p>title of org</p>
             <p><a href="#" id="title of org">
@@ -40,5 +43,5 @@ const getOrgDivs = orgs => {
 }
 
 export default {
-    renderOrgsView
+    renderHomeView
 }

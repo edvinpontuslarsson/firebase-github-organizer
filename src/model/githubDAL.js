@@ -2,13 +2,17 @@
 
 import auth from './auth'
 
-const getData = () =>
-    new Promise((resolve, reject) => {
+const data = []
+
+const getData = () => data
+
+const fetchData = () =>
+    new Promise(async (resolve, reject) => {
       const token = auth.getAccessToken()
 
-      const url = 'https://api.github.com/user/orgs'
+      const orgsURL = 'https://api.github.com/user/orgs'
 
-      const response = await window.fetch(url, {
+      const orgsRes = await window.fetch(orgsURL, {
           method: 'GET',
           headers: {
             'Accept': 'application/vnd.github.v3+json',
@@ -16,7 +20,12 @@ const getData = () =>
           }
         })
       
-      console.log(response.json())
+      console.log(orgsRes.json())
+
+      resolve()
     })
 
-export default { getData }
+export default {
+  fetchData,
+  getData
+}
