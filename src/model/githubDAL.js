@@ -2,9 +2,8 @@
 
 import auth from './auth'
 
-const orgs = []
-
 /**
+ * @returns {Array}
  * Objects with these properties:
     avatar_url: org avatar,
     description: -,
@@ -19,8 +18,6 @@ const orgs = []
     repos_url: -,
     url: url to this org
  */
-const getOrgs = () => orgs
-
 const fetchOrgs = () =>
     new Promise(async resolve => {
       const orgsURL = 'https://api.github.com/user/orgs'
@@ -33,9 +30,14 @@ const fetchOrgs = () =>
       resolve(orgsRes.json())
     })
 
-const fetchOneOrg = org =>
+/**
+ * @param {Object} org object
+ * @returns {Object} object, example props:
+ * 
+ */
+const fetchOrgRepos = org =>
     new Promise(async resolve => {
-      const orgRes = await window.fetch(org.url, {
+      const orgRes = await window.fetch(org.repos_url, {
         method: 'GET',
         headers: getAuthHeaders()
       })
@@ -52,6 +54,5 @@ const getAuthHeaders = () => {
 
 export default {
   fetchOrgs,
-  getOrgs,
-  fetchOneOrg
+  fetchOrgRepos
 }

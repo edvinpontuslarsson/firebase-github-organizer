@@ -16,7 +16,7 @@ const renderOrgView = async (userData, allOrgs, org) => {
         orgDiv.firstChild
     )
 
-    const orgData = await githubDAL.fetchOneOrg(org)
+    const orgData = await githubDAL.fetchOrgRepos(org)
     console.log(orgData)
 }
 
