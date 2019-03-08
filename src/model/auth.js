@@ -25,7 +25,7 @@ const login = async () => {
  * @returns {Array}
  */
 const getUserData = () => 
-    firebase.auth().currentUser.providerData
+    firebase.auth().currentUser.providerData[0]
 
 /**
  * Asynchronous

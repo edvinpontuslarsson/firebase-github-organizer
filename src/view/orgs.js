@@ -1,6 +1,8 @@
 'use strict'
 
-const renderOrgsView = (router, userData, orgs) => {
+import xss from 'xss'
+
+const renderOrgsView = (userData, orgs) => {
     // remove log in btn, apppend log out
 
     // <button id="logout-btn">Log out</button>
@@ -8,15 +10,15 @@ const renderOrgsView = (router, userData, orgs) => {
     // getByID.innerhtml = getView
 }
 
-const getOrgsView = (router, userData, orgs) => 
+const getOrgsView = (userData, orgs) => 
     `
-    <h1>Welcome ${userData[0].displayName}!</h1>
-    <img src="${userData[0].photoURL}" alt="Profile picture" id="profile-pic">
+    <h1>Welcome ${xss(userData.displayName)}!</h1>
+    <img src="${userData.photoURL}" alt="Profile picture" id="profile-pic">
     <h2>Your organisations:</h2>
-    ${getOrgDivs(router, orgs)}
+    ${getOrgDivs(orgs)}
     `
 
-const getOrgDivs = (router, orgs) => {
+const getOrgDivs = orgs => {
     const divStart = '<div>'
 
     orgs.forEach(org => {
@@ -29,7 +31,7 @@ const getOrgDivs = (router, orgs) => {
 
         // add event listener to each link
 
-        // router.navigateTo(title)
+        // 
     })
 
     const divEnd = '</div>'
