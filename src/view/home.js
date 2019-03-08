@@ -1,11 +1,11 @@
 'use strict'
 
 import xss from 'xss'
+import contentSection from './contentSection'
 
 const renderHomeView = (userData, ghData) => {
-    const content = document.getElementById('content-section')
-    content.innerHTML = 'Please stand by'
-    
+    const section = contentSection.getClearedContentSection()
+    section.innerText = 'Please stand by'
     // remove log in btn, apppend log out
 
     // <button id="logout-btn">Log out</button>
