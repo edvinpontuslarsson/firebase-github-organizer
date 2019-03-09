@@ -55,20 +55,24 @@ const fetchOrgRepoData = org =>
     const repoArr = await reposRes.json()
 
     repoArr.forEach(async repo => {
-      const releases = 
-          await window.fetch(repo.releases_url, getGETReqObj())
-      repo.fetched_releases = await releases.json()
-
-      const issues = 
-          await window.fetch(repo.issues_url, getGETReqObj())
-      repo.fetched_issues = await issues.json()
-
-      const commits =
-          await window.fetch(repo.commits_url, getGETReqObj())
-      repo.fetched_commits = await commits.json()
+      repo.fetched_releases = await fetchFromRepoURL(repo.releases_url)
+      repo.fetched_issues = await fetchFromRepoURL(repo.issues_url)
+      repo.fetched_commits = await fetchFromRepoURL(repo.commits_url)
     }) 
 
     resolve(repoArr)
+  })
+
+/**
+ * @param {String} repoURL url from github res obj
+ * @returns {Array}
+ */
+const fetchFromRepoURL = repoURL =>
+  new Promise(async (resolve, reject) => {
+    const url = repoURL.split('{')[0]
+    const res = await window.fetch(url, getGETReqObj())
+    if (!res.ok) resolve([]) // empty []
+    resolve(res.json())
   })
 
 const getGETReqObj = () => {
