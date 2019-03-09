@@ -6,17 +6,8 @@ const activate = async () => {
   /**
    * Call from index,
    * listen to firebase for hooks
-   * 
-   * https://stackoverflow.com/questions/34442739/how-does-one-set-private-environment-variables-on-firebase-hosting
-   * 
-   * // if environment variable is defined
-   * if (functions.config().gh_secret) {
-   *  // compare secret to gh, in dev don't
-   * }
    */
 }
-
-// send secret if in production
 
 // Event types for hooks:
 // https://developer.github.com/v3/activity/events/types/
@@ -28,11 +19,29 @@ const activate = async () => {
  * 
  * Hooks for each repo:
  * ReleaseEvent: -,
- * PushEvent: for commits,
- * IssuesEvent: issue CRUD events
+ * IssuesEvent: issue CRUD events,
+ * PushEvent: for commits
  */
 const setHooks = async () => {
+  const hostURL = 
+      process.argv.splice(2) || 'https://gitedvinhub.firebaseapp.com/'
 
+  const hookPostObj = {
+    name: 'web',
+    active: 'true',
+    events: [
+      'repository',
+      'release',
+      'issues',
+      'push'
+    ],
+    config: {
+      url: hostURL,
+      content_type: 'json'
+    }
+  }
+
+  const hookPost = JSON.stringify(hookPostObj)
 }
 
 /**
