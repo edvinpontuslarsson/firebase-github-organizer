@@ -68,10 +68,10 @@ const fetchOrgRepoData = org =>
  * @returns {Array}
  */
 const fetchFromRepoURL = repoURL =>
-  new Promise(async (resolve, reject) => {
+  new Promise(async resolve => {
     const url = repoURL.split('{')[0]
     const res = await window.fetch(url, getGETReqObj())
-    if (!res.ok) resolve([]) // empty []
+    if (!res.ok) return resolve([]) // empty []
     resolve(res.json())
   })
 
