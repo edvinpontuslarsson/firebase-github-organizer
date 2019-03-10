@@ -1,12 +1,11 @@
 'use strict'
 
-import init from './model/init'
+import app from './model/app'
+import messaging from './model/messaging'
 import loginView from './view/login'
 import githubDAL from './model/githubDAL'
 
-  ;(async () => {
-  init.initialize()
-  loginView.renderLoginView()
-})()
+app.initialize()
+messaging.initialize()
+loginView.renderLoginView()
 
-// also listen for hooks here, send to ghDAL setter

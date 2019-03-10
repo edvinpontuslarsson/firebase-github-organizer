@@ -23,8 +23,7 @@ const activate = async () => {
  * PushEvent: for commits
  */
 const setHooks = async () => {
-  const hostURL = 
-      process.argv.splice(2) || 'https://gitedvinhub.firebaseapp.com/'
+  const hostURL = 'https://gitedvinhub.firebaseapp.com/'
 
   const hookPostObj = {
     name: 'web',
