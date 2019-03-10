@@ -1,9 +1,9 @@
 // this is a service worker file
-// uses code from this demo: https://www.youtube.com/watch?v=BsCBCudx58g
 
 importScripts('https://www.gstatic.com/firebasejs/5.8.6/firebase-app.js')
 importScripts('https://www.gstatic.com/firebasejs/5.8.6/firebase-messaging.js')
 
+/*
 const config = {
     apiKey: 'AIzaSyBDrSwWXn2AklmSJtlGTJ37jpUXorwyv1c',
     authDomain: 'gitedvinhub.firebaseapp.com',
@@ -13,10 +13,15 @@ const config = {
     messagingSenderId: '821443809987'
 }
 firebase.initializeApp(config)
+*/
+
+// follows documentation here: https://firebase.google.com/docs/cloud-messaging/js/receive
+firebase.initializeApp({ 'messagingSenderId': '821443809987' })
 
 // initializes Firebase Cloud messaging
 const messaging = firebase.messaging()
 
+// uses code from this demo: https://www.youtube.com/watch?v=BsCBCudx58g
 messaging.setBackgroundMessageHandler(payload => {
     const title = 'GitHub update'
     const options = { body: payload }

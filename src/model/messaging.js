@@ -5,25 +5,25 @@ import 'firebase/firebase-messaging'
 
 const initialize = () => {
     const messaging = firebase.messaging()
-    // messaging.usePublicVapidKey('AAAAv0Hd0sM:APA91bFXXwS8x3tSPhENNlVZSsuFionzjYtvqihGTznwBaOMk6HE8LRwpiYGsBmVywDUIBUsadRyXha-eFPXBXuHJXA3tWUUf0_IDX9g063tv5-m08Br44wVNJs_Lfq6WqW3D-YW8tXo')
+    messaging.usePublicVapidKey('BJ_QVW8x9sJjL3QOMGQrPqMEQmNBwEofbTQCHckXL-if668bUqb6MWidR2DQdWVZvryCzZXqgtWbF6F6-Fm3UpM')
 
     // following this demo: https://www.youtube.com/watch?v=BsCBCudx58g
     messaging.requestPermission()
         .then(() => {
             console.log('User allows notifications')
-            return messaging.getToken()
+            return getToken()
         })
         .then(token => {
-            // TODO: store token in cloud,
-            // to be able to send messages to it
-
-            // use token for fcm API
-
-            console.log(token)
+            // for now, send token to DB, only do on refreshs later
+            
         })
-        .catch(err => {
-            console.log(err + 'No notifications for you!')
-        })
+        .catch(err => { console.log('No notifications... ' + err) })
+
+    messaging.onTokenRefresh(async () => {
+        const newToken = await messaging.getToken()
+        
+        // TODO: send token to server
+    })
 
     messaging.onMessage(payload => {
       console.log('Message received: ' + payload)  
