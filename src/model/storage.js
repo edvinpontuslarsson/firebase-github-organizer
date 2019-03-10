@@ -7,9 +7,10 @@ import 'firebase/database'
  * Replaces any exsting token
  */
 const storeMessagingToken = (username, token) => {
-  firebase.database()
-    .ref(`tokens/${username}`).set({ token })
+  db().ref(`tokens/${username}`).set({ token })
 }
+
+const db = () => firebase.database()
 
 // TODO: continue here: https://firebase.google.com/docs/database/web/read-and-write
 // I have now implemented "Basic write operations"
