@@ -22,7 +22,7 @@ const renderLoginView = () => {
 
 const login = async () => {
   await auth.login()
-  await messaging.initialize()
+  await messaging.initialize(auth.getUsername())
 
   const userData = await auth.getUserData()
   const orgs = await githubDAL.fetchOrgs()
