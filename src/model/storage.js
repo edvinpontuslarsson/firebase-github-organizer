@@ -1,10 +1,8 @@
 'use strict'
 
-import 'firebase/storage'
+import firebase from 'firebase/app'
+import 'firebase/database'
 
-/**
- * Storage module
- */
-export default app => {
-  app.storage().ref('path')
-}
+const database = firebase.database()
+
+

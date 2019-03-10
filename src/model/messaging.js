@@ -11,16 +11,23 @@ const initialize = () => {
     messaging.requestPermission()
         .then(() => {
             console.log('User allows notifications')
-            return getToken()
+            return messaging.getToken()
         })
         .then(token => {
             // for now, send token to DB, only do on refreshs later
-            
+
+            // continue from here:
+            // https://firebase.google.com/docs/cloud-messaging/js/first-message
+
+            // Will probably use Firebase Realtime Database, can use both this and firestore
+            // https://firebase.google.com/docs/database/
+            console.log(token)                            
         })
         .catch(err => { console.log('No notifications... ' + err) })
 
     messaging.onTokenRefresh(async () => {
         const newToken = await messaging.getToken()
+        console.log(newToken)
         
         // TODO: send token to server
     })
