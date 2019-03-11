@@ -10,15 +10,13 @@ const app = express()
 // enables Cross-Origin Resource Sharing
 app.use(cors({ origin: true }))
 
-app.post('/', (req, res) => {
-    const data = req.body
+app.post('/', async (req, res) => {
+    const payload = req.body
 
-    const db = functions.database()
-    const token =  ''
-
-    const message = {
-        data,
-        token
+    try {
+        await messageServiceWorker(payload)
+    } catch (error) {
+        console.log(`Error sending service worker message: ${error}`)
     }
 
     // TODO: set in DB latest/${username}, listen for that in client
@@ -26,13 +24,31 @@ app.post('/', (req, res) => {
     // TODO: get secret from DB, make sure from GitHub
     // generate random string in client and store in DB
 
-    // sends message to service worker corresponding to token
-    admin.messaging().send(message)
-        .catch((error) => {
-            console.log(`Sending message failed. Error: ${error}`)
-        })
+    return res.sendStatus(200)
+})
 
-    res.sendStatus(200)
+/**
+ * Asynchronous
+ * @param payload - req.body
+ */
+const messageServiceWorker = async payload => {
+    const token = await getToken(payload)
+    console.log('token: ' + token)
+    const message = { data: payload, token }
+    
+    admin.messaging().send(message)
+}
+
+/**
+ * @param payload - req.body
+ * @returns {Promise<String>}
+ */
+const getToken = payload => new Promise(resolve => {
+    const secret = payload.secret
+    console.log('secret: ' + secret) // todo try without initial /
+    admin.database().ref(`/tokens/${secret}`).once('value')
+        .then(snapshot => resolve(snapshot.val().secret))
+        .catch(() => resolve(null))
 })
 
 const server = functions.https.onRequest(app)

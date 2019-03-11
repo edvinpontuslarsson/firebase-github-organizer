@@ -10,7 +10,7 @@ import cryptoRandomString from 'crypto-random-string'
  */
 const storeTokenWithSecret = token => {
   const secret = cryptoRandomString(10)
-  db().ref(`tokens/${secret}`).set({ token })
+  db().ref(`tokens/${secret}`).set({ secret: token })
 }
 
 const db = () => firebase.database()
