@@ -16,10 +16,13 @@ firebase.initializeApp(config)
 // initializes Firebase Cloud messaging
 const messaging = firebase.messaging()
 
-messaging.setBackgroundMessageHandler(payload => {
-    const title = 'GitHub update'
-    const options = { body: payload.data.greeting }
+messaging.setBackgroundMessageHandler(async payload => {
+    const message = await payload.json()
+    
+    const title = `Update: ${message.data.title}`
 
+    const options = { body: message.data.greeting }
+    
     return self.registration.showNotification(
         title, options
     )

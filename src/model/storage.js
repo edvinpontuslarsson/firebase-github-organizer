@@ -2,12 +2,15 @@
 
 import firebase from 'firebase/app'
 import 'firebase/database'
+import cryptoRandomString from 'crypto-random-string'
 
 /**
+ * Generates GitHub secret as key for token
  * Replaces any exsting token
  */
-const storeMessagingToken = (username, token) => {
-  db().ref(`tokens/${username}`).set({ token })
+const storeTokenWithSecret = token => {
+  const secret = cryptoRandomString(10)
+  db().ref(`tokens/${secret}`).set({ token })
 }
 
 const db = () => firebase.database()
@@ -16,6 +19,6 @@ const db = () => firebase.database()
 // I have now implemented "Basic write operations"
 
 export default {
-  storeMessagingToken
+  storeTokenWithSecret
 }
 

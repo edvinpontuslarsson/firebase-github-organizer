@@ -4,22 +4,26 @@ import firebase from 'firebase/app'
 import 'firebase/firebase-messaging'
 import storage from './storage'
 
-const initialize = username => {
+const initialize = () => {
     const messaging = firebase.messaging()
     messaging.usePublicVapidKey('BJ_QVW8x9sJjL3QOMGQrPqMEQmNBwEofbTQCHckXL-if668bUqb6MWidR2DQdWVZvryCzZXqgtWbF6F6-Fm3UpM')
 
-    // following this demo: https://www.youtube.com/watch?v=BsCBCudx58g
     messaging.requestPermission()
         .then(() => messaging.getToken())
         .then(token => {
-          storage.storeMessagingToken(username, token)
+          // replaces any existing user token
+          storage.storeTokenWithSecret(token)
         })
-        .catch(err => { console.log('No notifications... ' + err) })
-
-    messaging.onMessage(payload => {
-      console.log('Message received: ' + payload)  
-    })
+        .catch(() => { console.log(`No notifications`) })
 }
 
-export default { initialize }
+/**
+ * @returns {Promise<String>} this user's current token
+ */
+const getToken = () => firebase.messaging().getToken()
+
+export default {
+  initialize,
+  getToken
+}
 
