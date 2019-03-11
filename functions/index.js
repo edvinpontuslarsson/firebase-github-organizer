@@ -22,7 +22,9 @@ app.post('/', async (req, res) => {
     // TODO: set in DB latest/${username}, listen for that in client
 
     // TODO: get secret from DB, make sure from GitHub
-    // generate random string in client and store in DB
+    // secret shoud be in db
+
+    // snapshot.key()
 
     return res.sendStatus(200)
 })
@@ -31,27 +33,28 @@ app.post('/', async (req, res) => {
  * Asynchronous
  * @param payload - req.body
  */
-const messageServiceWorker = payload =>
-    new Promise(async (resolve, reject) => {
+const messageServiceWorker = async payload => {
+    try {
         const token = await getToken(payload)
-
         const message = { data: payload, token }
-        
+    
         admin.messaging().send(message)
-            .catch(err => reject(err))
         resolve()
-    })
+    } catch (error) {
+        throw new Error(error)
+    }
+}
 
 /**
  * @param payload - req.body
- * @returns {Promise<String>}
+ * @returns {Promise<String>} null if payload is incorrect
  */
 const getToken = payload => new Promise(resolve => {
     const secret = payload.secret
 
     admin.database().ref(`tokens/${secret}`).once('value')
-        .then(snapshot => resolve(snapshot.val().secret))
-        .catch(() => resolve(null))
+        .then(snapshot => resolve(snapshot.val()/*.token*/))
+        .catch(error => reject(new Error(error)))
 })
 
 const server = functions.https.onRequest(app)
