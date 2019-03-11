@@ -46,7 +46,7 @@ const messageServiceWorker = async payload => {
 const getToken = payload => new Promise(resolve => {
     const secret = payload.secret
     console.log('secret: ' + secret) // todo try without initial /
-    admin.database().ref(`/tokens/${secret}`).once('value')
+    admin.database().ref(`tokens/${secret}`).once('value')
         .then(snapshot => resolve(snapshot.val().secret))
         .catch(() => resolve(null))
 })
