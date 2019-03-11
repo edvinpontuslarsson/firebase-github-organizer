@@ -31,13 +31,16 @@ app.post('/', async (req, res) => {
  * Asynchronous
  * @param payload - req.body
  */
-const messageServiceWorker = async payload => {
-    const token = await getToken(payload)
-    console.log('token: ' + token)
-    const message = { data: payload, token }
-    
-    admin.messaging().send(message)
-}
+const messageServiceWorker = payload =>
+    new Promise(async (resolve, reject) => {
+        const token = await getToken(payload)
+
+        const message = { data: payload, token }
+        
+        admin.messaging().send(message)
+            .catch(err => reject(err))
+        resolve()
+    })
 
 /**
  * @param payload - req.body
@@ -45,7 +48,7 @@ const messageServiceWorker = async payload => {
  */
 const getToken = payload => new Promise(resolve => {
     const secret = payload.secret
-    console.log('secret: ' + secret) // todo try without initial /
+
     admin.database().ref(`tokens/${secret}`).once('value')
         .then(snapshot => resolve(snapshot.val().secret))
         .catch(() => resolve(null))
