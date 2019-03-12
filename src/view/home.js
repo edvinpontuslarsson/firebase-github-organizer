@@ -44,7 +44,7 @@ const appendOrgs = (userData, allOrgs) => {
     header.setAttribute('class', 'org-header')
     const link = document.createElement('a')
     link.innerText = org.login
-    link.setAttribute('href', org.url) // later getAttribute
+    link.setAttribute('href', org.url)
 
     header.appendChild(link)
 

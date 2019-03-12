@@ -1,7 +1,6 @@
 'use strict'
 
 import auth from '../model/auth'
-import messaging from '../model/messaging'
 import githubDAL from '../model/githubDAL'
 import home from './home'
 import contentSection from './contentSection'
@@ -22,7 +21,6 @@ const renderLoginView = () => {
 
 const login = async () => {
   await auth.login()
-  await messaging.initialize()
 
   const userData = await auth.getUserData()
   const orgs = await githubDAL.fetchOrgs()

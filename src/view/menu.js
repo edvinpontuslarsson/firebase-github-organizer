@@ -2,6 +2,7 @@
 
 import login from './login'
 import home from './home'
+import settings from './settings'
 import auth from '../model/auth'
 
 // can later append to this div
@@ -17,10 +18,17 @@ const getMenuDiv = (userData, orgs) => {
     home.renderHomeView(userData, orgs)
   })
 
+  const settingsBtn = document.createElement('button')
+  settingsBtn.innerText = 'Settings'
+  settingsBtn.addEventListener('click', () => {
+    settings.renderSettingsView(userData, orgs)
+  })
+
   const div = document.createElement('div')
   div.setAttribute('id', 'menu')
   div.appendChild(logOutBtn)
   div.appendChild(homeBtn)
+  div.appendChild(settingsBtn)
 
   return div
 }
