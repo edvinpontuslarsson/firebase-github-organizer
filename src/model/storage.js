@@ -2,38 +2,17 @@
 
 import firebase from 'firebase/app'
 import 'firebase/database'
-import cryptoRandomString from 'crypto-random-string'
+import cryptoRandomString from 'crypto-random-string' // maybe for 1 GH secret
 
-/** TODO: REDO
- * Stores token with GitHub secret
- * Replaces any exsting token
- */
-const storeTokenWithSecret = token => {
-  const secret = cryptoRandomString(10)
-  db().ref(`tokens/${secret}`).set({ token })
+// TODO: test if this works as expected
+
+const storeSubscription = (orgName, eventType) => {
+  const token = 'testing-token' // TODO: get token from messaging
+  db().ref(`organizations/${orgName}/subscriptions/${eventType}`)
+    .set({ token })
 }
 
-const notifyToReleases = (username, token, org) => {
-  
-}
-
-const notifyToIssues = (username, token, org) => {
-
-}
-
-const notifyToCommits = (username, token, org) => {
-
-}
-
-const isNotifiedToReleases = (username, org) => {
-
-}
-
-const isNotifiedToIssues = (username, org) => {
-
-}
-
-const isNotifiedToCommits = (username, org) => {
+const isSubscribed = (org, eventType) => {
 
 }
 
@@ -43,12 +22,7 @@ const db = () => firebase.database()
 // I have now implemented "Basic write operations"
 
 export default {
-  storeTokenWithSecret,
-  notifyToReleases,
-  notifyToIssues,
-  notifyToCommits,
-  isNotifiedToReleases,
-  isNotifiedToIssues,
-  isNotifiedToCommits
+  storeSubscription,
+  isSubscribed
 }
 
