@@ -27,6 +27,7 @@ const appendOrgSettings = (organizations, settingsDiv) => {
         orgDiv.appendChild(getHeader('h3', org.login))
 
         // TODO: check in db if notification or not, for now, just false
+        
         orgDiv.appendChild(
             getNotificationSetting(org, 'Releases', false)
         )
@@ -75,7 +76,6 @@ const getNotificationSetting = (org, eventType, isNotification) => {
  */
 const changeSubscriptionSetting = (org, eventType, isNotification) => {
     // get username here
-    
 }
 
 export default { renderSettingsView }

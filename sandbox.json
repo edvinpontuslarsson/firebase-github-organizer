@@ -1,0 +1,24 @@
+{
+    "organizations": {
+        "<orgName>": {
+            "release_subscribers": [
+                {
+                    "username": "<String>",
+                    "token": "<String>"
+                }
+            ],
+            "issue_subscribers": [
+                {
+                    "username": "<String>",
+                    "token": "<String>"
+                }
+            ],
+            "commit_subscribers": [
+                {
+                    "username": "<String>",
+                    "token": "<String>"
+                }
+            ]
+        }
+    }
+}
