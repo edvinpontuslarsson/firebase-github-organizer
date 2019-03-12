@@ -12,8 +12,8 @@ const storeSubscription = (orgName, eventType) => {
     .set({ token })
 }
 
-const isSubscribed = (org, eventType) => {
-
+const isSubscribed = (orgName, eventType) => {
+  
 }
 
 const db = () => firebase.database()
