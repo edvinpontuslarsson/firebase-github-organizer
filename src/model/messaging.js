@@ -6,17 +6,15 @@ import storage from './storage'
 
 // TODO: a good way of initializing & then getting token
 
-const initialize = () => {
-    const messaging = firebase.messaging()
-    messaging.usePublicVapidKey('BJ_QVW8x9sJjL3QOMGQrPqMEQmNBwEofbTQCHckXL-if668bUqb6MWidR2DQdWVZvryCzZXqgtWbF6F6-Fm3UpM')
+// initialize & listen from index.html, can then update view
 
-    messaging.requestPermission()
-        .then(() => messaging.getToken())
-        .then(token => {
-          // replaces any existing user token
-          storage.storeTokenWithSecret(token)
-        })
-        .catch(() => { console.log(`No notifications`) })
+const initialize = () => {
+  const messaging = firebase.messaging()
+  messaging.usePublicVapidKey('BJ_QVW8x9sJjL3QOMGQrPqMEQmNBwEofbTQCHckXL-if668bUqb6MWidR2DQdWVZvryCzZXqgtWbF6F6-Fm3UpM')
+
+  messaging.requestPermission().catch(() => {
+    console.log('No notifications')
+  })
 }
 
 /**
