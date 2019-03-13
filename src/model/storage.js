@@ -12,8 +12,7 @@ const storeToken = token => {
 
 const storeSubscription = async (orgName, eventType) => {
   const username = auth.getUsername()
-  const token = 
-      await db().ref(`tokens/${username}`).once('value')
+  const token = await getToken()
 
   db().ref(
     `organizations/${orgName}/subscriptions/${eventType}/${username}`
@@ -30,6 +29,12 @@ const isSubscribed = (orgName, eventType) =>
   })
 
 const db = () => firebase.database()
+
+/**
+ * @returns {Promise<String>}
+ */
+const getToken = () => 
+  db().ref(`tokens/${username}`).once('value')
 
 // TODO: continue here: https://firebase.google.com/docs/database/web/read-and-write
 // I have now implemented "Basic write operations"
