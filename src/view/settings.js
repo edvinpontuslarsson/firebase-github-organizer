@@ -66,8 +66,7 @@ const appendOrgSettings = (userData, organizations, settingsDiv) => {
  * @param {String} eventType repository/release/issues/push
  * @param {boolean} isNotification 
  */
-const getNotificationSetting = 
-(userData, allorgs, org, eventType, isNotification) => {
+const getNotificationSetting = (userData, allorgs, org, eventType, isNotification) => {
     console.log('null? ' + isNotification)
     console.log('keys: ' + Object.keys(isNotification))
     console.log('values: ' + Object.values(isNotification))
@@ -99,11 +98,12 @@ const getNotificationSetting =
  * @param {String} eventType repository/release/issues/push
  * @param {boolean} isNotification 
  */
-const changeSubscriptionSetting = 
-async (userData, allorgs, org, eventType, isNotification) => {
+const changeSubscriptionSetting = async (userData, allorgs, org, eventType, isNotification) => {
     if (isNotification) {
         // TODO: remove subscription
+        console.log('Notifcation exists')
     } else {
+        console.log('No, notifcation does not exist')
         await storage.storeSubscription(org.login, eventType)
         
         // re-renders page

@@ -12,7 +12,7 @@ const storeToken = token => {
 
 const storeSubscription = async (orgName, eventType) => {
   const username = auth.getUsername()
-  const token = await getToken()
+  const token = await getToken(username)
 
   db().ref(
     `organizations/${orgName}/subscriptions/${eventType}/${username}`
@@ -21,8 +21,8 @@ const storeSubscription = async (orgName, eventType) => {
 
 const isSubscribed = (orgName, eventType) =>
   new Promise(async resolve => {
-    // const username = auth.getUsername()
-    const token = await getToken()
+    const username = auth.getUsername()
+    const token = await getToken(username)
 
     // https://stackoverflow.com/questions/37910008/check-if-value-exists-in-firebase-db
 
@@ -32,14 +32,22 @@ const isSubscribed = (orgName, eventType) =>
     ).orderByChild('token').equalTo(token).once('value', snapshot => {
       resolve(snapshot.exists())
     })
+    /*
+   const username = auth.getUsername()
+    const exists = await db().ref(
+      `organizations/${orgName}/subscriptions/${eventType}/${username}`
+    ).once('value')
+    resolve(exists)
+    */
   })
 
 const db = () => firebase.database()
 
 /**
+ * @param {String} username 
  * @returns {Promise<String>}
  */
-const getToken = () => 
+const getToken = username => 
   db().ref(`tokens/${username}`).once('value')
 
 // TODO: continue here: https://firebase.google.com/docs/database/web/read-and-write
