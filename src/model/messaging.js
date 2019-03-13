@@ -5,19 +5,18 @@ import 'firebase/firebase-messaging'
 import storage from './storage'
 
 const initialize = () => {
-  const messaging = firebase.messaging()
-  messaging.usePublicVapidKey('BJ_QVW8x9sJjL3QOMGQrPqMEQmNBwEofbTQCHckXL-if668bUqb6MWidR2DQdWVZvryCzZXqgtWbF6F6-Fm3UpM')
+    const messaging = firebase.messaging()
+    messaging.usePublicVapidKey('BJ_QVW8x9sJjL3QOMGQrPqMEQmNBwEofbTQCHckXL-if668bUqb6MWidR2DQdWVZvryCzZXqgtWbF6F6-Fm3UpM')
 
-  messaging.requestPermission()
-    .then(() => { messaging.getToken() })
-    .then(token => {
-      console.log('token: ' + token)
-      storage.storeToken(token) 
-    })
-    .catch(err => { console.error(`No notifications: ${err}`) })
+    messaging.requestPermission()
+        .then(() => messaging.getToken())
+        .then(token => {
+          console.log('token: ' + token)
+          storage.storeToken(token)
+        })
+        .catch(() => { console.log(`No notifications`) })
 }
 
 export default {
   initialize
 }
-
