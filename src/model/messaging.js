@@ -11,7 +11,6 @@ const initialize = () => {
     messaging.requestPermission()
         .then(() => messaging.getToken())
         .then(token => {
-          console.log('token: ' + token)
           storage.storeToken(token)
         })
         .catch(() => { console.log(`No notifications`) })

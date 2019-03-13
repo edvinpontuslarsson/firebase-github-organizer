@@ -27,30 +27,30 @@ const appendOrgSettings = (userData, organizations, settingsDiv) => {
         const orgDiv = document.createElement('div')
         orgDiv.appendChild(getHeader('h3', org.login))
 
-        const repositorySubExists = await storage.isSubscribed(org.login, 'repository')
-        const releaseSubExists = await storage.isSubscribed(org.login, 'release')
-        const issuesSubExists = await storage.isSubscribed(org.login, 'issues')
-        const pushSubExists = await storage.isSubscribed(org.login, 'push')
+        const repositorySubExists = 
+            await storage.isSubscribed(org.login, 'repository')
+        const releaseSubExists = 
+            await storage.isSubscribed(org.login, 'release')
+        const issuesSubExists = 
+            await storage.isSubscribed(org.login, 'issues')
+        const pushSubExists = 
+            await storage.isSubscribed(org.login, 'push')
         
-        orgDiv.appendChild(
-            getNotificationSetting(
-                userData, organizations, org, 'repository', repositorySubExists
-            )
+        orgDiv.appendChild(getNotificationSetting(
+            userData, organizations, org, 'repository', repositorySubExists
         )
-        orgDiv.appendChild(
-            getNotificationSetting(
-                userData, organizations, org, 'release', releaseSubExists
-            )
         )
-        orgDiv.appendChild(
-            getNotificationSetting(
-                userData, organizations, org, 'issues', issuesSubExists
-            )
+        orgDiv.appendChild(getNotificationSetting(
+            userData, organizations, org, 'release', releaseSubExists
         )
-        orgDiv.appendChild(
-            getNotificationSetting(
-                userData, organizations, org, 'push', pushSubExists
-            )
+        )
+        orgDiv.appendChild(getNotificationSetting(
+            userData, organizations, org, 'issues', issuesSubExists
+        )
+        )
+        orgDiv.appendChild(getNotificationSetting(
+            userData, organizations, org, 'push', pushSubExists
+        )
         )
 
         settingsDiv.appendChild(orgDiv)

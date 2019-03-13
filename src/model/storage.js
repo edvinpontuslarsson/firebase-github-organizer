@@ -22,6 +22,7 @@ const storeSubscription = async (orgName, eventType) => {
 
 const isSubscribed = (orgName, eventType) =>
   new Promise(async resolve => {
+    const username = auth.getUsername()
     const exists = await db().ref(
       `organizations/${orgName}/subscriptions/${eventType}/${username}`
     ).once('value')
