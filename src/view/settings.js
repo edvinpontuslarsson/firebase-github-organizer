@@ -30,10 +30,10 @@ const appendOrgSettings = (userData, organizations, settingsDiv) => {
 
         const repositorySubExists = 
             await storage.isSubscribed(org.login, 'repository')
-        console.log('repo sub obj: ' + repositorySubExists)
+        console.log('repo sub: ' + repositorySubExists)
         const releaseSubExists = 
             await storage.isSubscribed(org.login, 'release')
-        console.log('release sub oj: ' + releaseSubExists)
+        console.log('release sub: ' + releaseSubExists)
         const issuesSubExists = 
             await storage.isSubscribed(org.login, 'issues')
             console.log('does not reach line 38 settings.js?')
