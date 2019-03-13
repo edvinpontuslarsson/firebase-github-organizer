@@ -2,22 +2,29 @@
 
 import firebase from 'firebase/app'
 import 'firebase/database'
-import messaging from './messaging'
+import auth from './auth'
 import cryptoRandomString from 'crypto-random-string' // maybe for 1 GH secret
 
-// TODO: test if this works as expected
+const storeToken = token => {
+  const username = auth.getUsername()
+  db().ref(`tokens/${username}`).set({ token })
+}
 
 const storeSubscription = async (orgName, eventType) => {
-  const token = await messaging.getToken()
-  db().ref(`organizations/${orgName}/subscriptions/${eventType}`)
-    .set({ token })
+  const username = auth.getUsername()
+  const token = 
+      await db().ref(`tokens/${username}`).once('value')
+
+  db().ref(
+    `organizations/${orgName}/subscriptions/${eventType}/${username}`
+  ).set({ token })
 }
 
 const isSubscribed = (orgName, eventType) =>
   new Promise(async resolve => {
-    const token = await messaging.getToken()
-    const exists = db().ref(`organizations/${orgName}/subscriptions/${eventType}`)
-      .orderByChild('token').equalTo(token).once('value')
+    const exists = await db().ref(
+      `organizations/${orgName}/subscriptions/${eventType}/${username}`
+    ).once('value')
     resolve(exists)
   })
 
@@ -27,6 +34,7 @@ const db = () => firebase.database()
 // I have now implemented "Basic write operations"
 
 export default {
+  storeToken,
   storeSubscription,
   isSubscribed
 }

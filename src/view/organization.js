@@ -18,6 +18,15 @@ const renderOrgView = async (userData, allOrgs, org) => {
     menu.getMenuDiv(userData, allOrgs),
     orgDiv.firstChild
   )
+
+  // TODO:
+  /**
+   * Listen for messsages/db updates,
+   * about this org
+   * see if orgdiv (getByID) exists on DOM,
+   * if it does exist, re-renderOrgView
+   * renderOrgView(userData, allOrgs, org)
+   */
 }
 
 const getOrgDiv = (userData, allOrgs, org, repos) => {
