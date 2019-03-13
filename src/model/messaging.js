@@ -10,7 +10,9 @@ const initialize = () => {
 
   messaging.requestPermission()
     .then(token => { storage.storeToken(token) })
-    .catch(() => { console.log('No notifications') })
+    .catch(err => {
+      console.error(err)
+    })
 }
 
 export default {

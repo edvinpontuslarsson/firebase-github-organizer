@@ -5,7 +5,7 @@ const path = require('path')
 module.exports = {
     devServer: {
         contentBase: path.join(__dirname, 'dist'),
-        compress: false,
+        compress: true,
         port: 4000
     }
 }
