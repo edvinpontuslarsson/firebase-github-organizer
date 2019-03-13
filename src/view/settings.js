@@ -24,15 +24,19 @@ const getHeader = (type, innerText) => {
 
 const appendOrgSettings = (userData, organizations, settingsDiv) => {
     organizations.forEach(async org => {
+        console.log('Does it get here? line 27 settings.js')
         const orgDiv = document.createElement('div')
         orgDiv.appendChild(getHeader('h3', org.login))
 
         const repositorySubExists = 
             await storage.isSubscribed(org.login, 'repository')
+        console.log('repo sub obj: ' + repositorySubExists)
         const releaseSubExists = 
             await storage.isSubscribed(org.login, 'release')
+        console.log('release sub oj: ' + releaseSubExists)
         const issuesSubExists = 
             await storage.isSubscribed(org.login, 'issues')
+            console.log('does not reach line 38 settings.js?')
         const pushSubExists = 
             await storage.isSubscribed(org.login, 'push')
         
