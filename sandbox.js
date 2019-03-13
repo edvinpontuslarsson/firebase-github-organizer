@@ -1,5 +1,5 @@
 'use strict'
-
+/*
 let subscribers
 
 if (payload.eventType === 'release') {
@@ -13,4 +13,5 @@ subscribers.forEach(sub => {
 function getReleaseSubscribers(orgName) {
     return query(`organisations/${orgName}/release_subscribers`)
 }
+*/
 

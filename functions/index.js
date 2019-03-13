@@ -52,7 +52,13 @@ const messageServiceWorker = async payload => {
 const getToken = payload => new Promise(resolve => {
     const secret = payload.secret
 
-    admin.database().ref(`tokens/${secret}`).once('value')
+    // TODO: 
+    /**
+     * get whole org repository/release/issues/push object,
+     * message all tokens
+     */
+
+    // admin.database().ref(`tokens/${secret}`).once('value')
         .then(snapshot => resolve(snapshot.val().token))
         .catch(error => reject(new Error(error)))
 })

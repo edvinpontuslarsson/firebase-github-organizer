@@ -2,13 +2,6 @@
 
 import auth from './auth'
 
-const activate = async () => {
-  /**
-   * Call from index,
-   * listen to firebase for hooks
-   */
-}
-
 // Event types for hooks:
 // https://developer.github.com/v3/activity/events/types/
 
@@ -56,13 +49,45 @@ const setHooks = async () => {
     url: url to this org
  */
 const fetchOrgs = () =>
-  new Promise(async resolve => {
+  new Promise(async (resolve, reject) => {
+    /*
     const orgsURL = 'https://api.github.com/user/orgs'
 
     const orgsRes =
         await window.fetch(orgsURL, getGETReqObj())
+    if (!orgsRes.ok) {
+      console.log(await orgsRes.json())
+      return resolve({}) // empty {}
+    }
 
     resolve(orgsRes.json())
+    */
+
+    // test data for now: save test data for later
+    resolve(
+      [
+        {
+          avatar_url: 'https://cdn.pixabay.com/photo/2014/11/30/14/11/kitty-551554__340.jpg',
+          description: 'test',
+          hooks_url: 'test',
+          issues_url: 'test',
+          login: 'test',
+          members_url: 'test',
+          repos_url: 'test',
+          url: 'test'
+        },
+        {
+          avatar_url: 'https://images.pexels.com/photos/356378/pexels-photo-356378.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+          description: 'test2',
+          hooks_url: 'test2',
+          issues_url: 'test2',
+          login: 'test2',
+          members_url: 'test2',
+          repos_url: 'test2',
+          url: 'test2'
+        }
+      ]
+    )
   })
 
 /**
@@ -86,12 +111,16 @@ const fetchOrgs = () =>
  * url: url to this repo
  */
 const fetchOrgRepoData = org =>
-  new Promise(async resolve => {
+  new Promise(async (resolve, reject) => {
     const reposRes =
         await window.fetch(org.repos_url, {
           method: 'GET',
           headers: getAuthHeaders()
         })
+    if (!reposRes.ok) {
+      console.log(await reposRes.json())
+      return resolve({}) // empty {}
+    }
 
     const repoArr = await reposRes.json()
 
@@ -132,7 +161,6 @@ const getAuthHeaders = () => {
 }
 
 export default {
-  activate,
   fetchOrgs,
   fetchOrgRepoData
 }

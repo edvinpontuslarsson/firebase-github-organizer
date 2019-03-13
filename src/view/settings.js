@@ -23,23 +23,34 @@ const getHeader = (type, innerText) => {
 }
 
 const appendOrgSettings = (userData, organizations, settingsDiv) => {
-    organizations.forEach(org => {
+    organizations.forEach(async org => {
         const orgDiv = document.createElement('div')
         orgDiv.appendChild(getHeader('h3', org.login))
 
-        // TODO: check in db if notification or not, for now, just false
+        const repositorySubExists = await storage.isSubscribed(org.login, 'repository')
+        const releaseSubExists = await storage.isSubscribed(org.login, 'release')
+        const issuesSubExists = await storage.isSubscribed(org.login, 'issues')
+        const pushSubExists = await storage.isSubscribed(org.login, 'push')
         
         orgDiv.appendChild(
-            getNotificationSetting(userData, organizations, org, 'repository', false)
+            getNotificationSetting(
+                userData, organizations, org, 'repository', repositorySubExists
+            )
         )
         orgDiv.appendChild(
-            getNotificationSetting(userData, organizations, org, 'release', false)
+            getNotificationSetting(
+                userData, organizations, org, 'release', releaseSubExists
+            )
         )
         orgDiv.appendChild(
-            getNotificationSetting(userData, organizations, org, 'issues', false)
+            getNotificationSetting(
+                userData, organizations, org, 'issues', issuesSubExists
+            )
         )
         orgDiv.appendChild(
-            getNotificationSetting(userData, organizations, org, 'push', false)
+            getNotificationSetting(
+                userData, organizations, org, 'push', pushSubExists
+            )
         )
 
         settingsDiv.appendChild(orgDiv)
@@ -53,6 +64,10 @@ const appendOrgSettings = (userData, organizations, settingsDiv) => {
  */
 const getNotificationSetting = 
 (userData, allorgs, org, eventType, isNotification) => {
+    console.log('null? ' + isNotification)
+    console.log('keys: ' + Object.keys(isNotification))
+    console.log('values: ' + Object.values(isNotification))
+    
     const symbolClass = isNotification ? 'stop' : 'add'
     const symbol = isNotification ? 'x' : '+'
         

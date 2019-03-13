@@ -2,7 +2,6 @@
 
 import firebase from 'firebase/app'
 import 'firebase/firebase-messaging'
-import storage from './storage'
 
 // TODO: a good way of initializing & then getting token
 

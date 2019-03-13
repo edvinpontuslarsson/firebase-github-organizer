@@ -1,27 +1,32 @@
 {
+    "tokens": {
+        "<username>": {
+            "token": "<String>"
+        }
+    },
     "organizations": {
         "<orgName>": {
             "subscriptions": {
-                "repository": [
-                    {
+                "repository": {
+                    "<username>": {
                         "token": "<String>"
                     }
-                ],
-                "release": [
-                    {
+                },
+                "release": {
+                    "<username>": {
                         "token": "<String>"
                     }
-                ],
-                "issues": [
-                    {
+                },
+                "issues": {
+                    "<username>": {
                         "token": "<String>"
                     }
-                ],
-                "push": [
-                    {
+                },
+                "push": {
+                    "<username>": {
                         "token": "<String>"
                     }
-                ]
+                }
             }
         }
     }
