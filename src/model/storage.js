@@ -23,22 +23,14 @@ const isSubscribed = (orgName, eventType) =>
   new Promise(async resolve => {
     const username = auth.getUsername()
     const token = await getToken(username)
-
+    console.log('token: ' + token)
     // https://stackoverflow.com/questions/37910008/check-if-value-exists-in-firebase-db
 
-    // ref without () ???
-    db().ref.child(
-      `organizations/${orgName}/subscriptions/${eventType}`
-    ).orderByChild('token').equalTo(token).once('value', snapshot => {
+    db().ref(
+      `organizations/${orgName}/subscriptions/${eventType}/${username}/token`
+    ).once('value', snapshot => {
       resolve(snapshot.exists())
     })
-    /*
-   const username = auth.getUsername()
-    const exists = await db().ref(
-      `organizations/${orgName}/subscriptions/${eventType}/${username}`
-    ).once('value')
-    resolve(exists)
-    */
   })
 
 const db = () => firebase.database()
@@ -47,8 +39,11 @@ const db = () => firebase.database()
  * @param {String} username 
  * @returns {Promise<String>}
  */
-const getToken = username => 
-  db().ref(`tokens/${username}`).once('value')
+const getToken = username => new Promise(resolve => {
+  db().ref(`tokens/${username}/token`).once('value', snapshot => {
+    resolve(snapshot.val())
+  })
+})
 
 // TODO: continue here: https://firebase.google.com/docs/database/web/read-and-write
 // I have now implemented "Basic write operations"

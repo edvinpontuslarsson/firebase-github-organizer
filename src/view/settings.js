@@ -24,19 +24,16 @@ const getHeader = (type, innerText) => {
 
 const appendOrgSettings = (userData, organizations, settingsDiv) => {
     organizations.forEach(async org => {
-        console.log('Does it get here? line 27 settings.js')
         const orgDiv = document.createElement('div')
         orgDiv.appendChild(getHeader('h3', org.login))
 
         const repositorySubExists = 
             await storage.isSubscribed(org.login, 'repository')
-        console.log('repo sub: ' + repositorySubExists)
+        console.log('line 32 settings, does repoSub exist? ' + repositorySubExists)
         const releaseSubExists = 
             await storage.isSubscribed(org.login, 'release')
-        console.log('release sub: ' + releaseSubExists)
         const issuesSubExists = 
             await storage.isSubscribed(org.login, 'issues')
-            console.log('does not reach line 38 settings.js?')
         const pushSubExists = 
             await storage.isSubscribed(org.login, 'push')
         
@@ -66,11 +63,7 @@ const appendOrgSettings = (userData, organizations, settingsDiv) => {
  * @param {String} eventType repository/release/issues/push
  * @param {boolean} isNotification 
  */
-const getNotificationSetting = (userData, allorgs, org, eventType, isNotification) => {
-    console.log('null? ' + isNotification)
-    console.log('keys: ' + Object.keys(isNotification))
-    console.log('values: ' + Object.values(isNotification))
-    
+const getNotificationSetting = (userData, allorgs, org, eventType, isNotification) => {    
     const symbolClass = isNotification ? 'stop' : 'add'
     const symbol = isNotification ? 'x' : '+'
         
@@ -101,9 +94,9 @@ const getNotificationSetting = (userData, allorgs, org, eventType, isNotificatio
 const changeSubscriptionSetting = async (userData, allorgs, org, eventType, isNotification) => {
     if (isNotification) {
         // TODO: remove subscription
-        console.log('Notifcation exists')
+        console.log('remove subscription')
     } else {
-        console.log('No, notifcation does not exist')
+        console.log('add subscription')
         await storage.storeSubscription(org.login, eventType)
         
         // re-renders page
