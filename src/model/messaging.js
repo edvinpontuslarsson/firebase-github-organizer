@@ -9,10 +9,12 @@ const initialize = () => {
   messaging.usePublicVapidKey('BJ_QVW8x9sJjL3QOMGQrPqMEQmNBwEofbTQCHckXL-if668bUqb6MWidR2DQdWVZvryCzZXqgtWbF6F6-Fm3UpM')
 
   messaging.requestPermission()
-    .then(token => { storage.storeToken(token) })
-    .catch(err => {
-      console.error(err)
+    .then(() => { messaging.getToken() })
+    .then(token => {
+      console.log('token: ' + token)
+      storage.storeToken(token) 
     })
+    .catch(err => { console.error(`No notifications: ${err}`) })
 }
 
 export default {
