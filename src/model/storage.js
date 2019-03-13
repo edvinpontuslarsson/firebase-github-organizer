@@ -23,13 +23,11 @@ const isSubscribed = (orgName, eventType) =>
   new Promise(async resolve => {
     const username = auth.getUsername()
     const token = await getToken(username)
-    console.log('token: ' + token)
-    // https://stackoverflow.com/questions/37910008/check-if-value-exists-in-firebase-db
 
     db().ref(
       `organizations/${orgName}/subscriptions/${eventType}/${username}/token`
     ).once('value', snapshot => {
-      resolve(snapshot.exists())
+      resolve(snapshot.val() === token)
     })
   })
 

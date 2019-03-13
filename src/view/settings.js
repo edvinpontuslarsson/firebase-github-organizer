@@ -29,7 +29,6 @@ const appendOrgSettings = (userData, organizations, settingsDiv) => {
 
         const repositorySubExists = 
             await storage.isSubscribed(org.login, 'repository')
-        console.log('line 32 settings, does repoSub exist? ' + repositorySubExists)
         const releaseSubExists = 
             await storage.isSubscribed(org.login, 'release')
         const issuesSubExists = 
