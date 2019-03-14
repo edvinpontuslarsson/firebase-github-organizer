@@ -21,6 +21,9 @@ const renderLoginView = () => {
 }
 
 const login = async () => {
+  // TODO: this can take time,
+  // remove login btn, add load spinner from YouEdvin
+
   await auth.login()
   await messaging.initialize()
 
