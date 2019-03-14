@@ -12,7 +12,9 @@ const renderLoginView = () => {
   const loginBtn = document.createElement('button')
   loginBtn.setAttribute('id', 'login-btn')
   loginBtn.innerText = 'Log in'
-  loginBtn.addEventListener('click', login)
+  loginBtn.addEventListener('click', () => {
+    login(loginBtn, section)
+  })
 
   const loginDiv = document.createElement('div')
   loginDiv.appendChild(loginBtn)
@@ -20,9 +22,15 @@ const renderLoginView = () => {
   section.appendChild(loginDiv)
 }
 
-const login = async () => {
-  // TODO: this can take time,
-  // remove login btn, add load spinner from YouEdvin
+/**
+ * @param {HTMLElement} loginBtn 
+ * @param {HTMLElement} section - content section
+ */
+const login = async (loginBtn, section) => {
+  // hides loginBtn & sets load spinner
+  loginBtn.setAttribute('class', 'hidden')
+  const spinnerDiv = renderAndGetSpinnerDiv()
+  section.appendChild(spinnerDiv)
 
   await auth.login()
   await messaging.initialize()
@@ -30,7 +38,19 @@ const login = async () => {
   const userData = await auth.getUserData()
   const orgs = await githubDAL.fetchOrgs()
 
+  spinnerDiv.setAttribute('class', 'hidden')
+
   home.renderHomeView(userData, orgs)
+}
+
+const renderAndGetSpinnerDiv = () => {
+  const spinnerDiv = document.createElement('div')
+  spinnerDiv.innerHTML = 
+  `
+    <p>Fetching data, please wait</p>
+    <div class="spinner"></div>
+  `
+  return spinnerDiv
 }
 
 export default { renderLoginView }
