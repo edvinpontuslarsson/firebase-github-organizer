@@ -7,6 +7,14 @@ admin.initializeApp()
 
 const app = express()
 
+/**
+ * /////////// 
+ * OBS IMPORTANT INFO!
+ * Cloud functions uses old node version,
+ * can't handle async-await
+ * ///////////
+ */
+
 // enables Cross-Origin Resource Sharing
 app.use(cors({ origin: true }))
 
@@ -14,16 +22,22 @@ app.post('/', (req, res) => {
     const payload = req.body
 
     try {
-        messageServiceWorker(payload).then(() => {
+        // messageServiceWorker(payload).then(() => {
+            
             // TODO: set in DB latest/${username}, listen for that in client
 
             // TODO: get secret from DB, make sure from GitHub
             // secret shoud be in db
 
             // snapshot.key()
+            res.status(200)
+            
+            // Have to return, also up ofc
 
-            return res.sendStatus(200)
-        })
+            return res.json({
+                greeting: 'Hello from the clouds!'
+            })
+        // })
     } catch (error) {
         console.log(`Error sending service worker message: ${error}`)
     }

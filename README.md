@@ -4,6 +4,11 @@
 
 Project is live at: https://gitedvinhub.firebaseapp.com
 
+Post url to cloud functions:
+```
+https://us-central1-gitedvinhub.cloudfunctions.net/server/
+```
+
 To generate main.js in dist: <br>
 npm run build
 
