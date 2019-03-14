@@ -37,7 +37,7 @@ const setHooks = async () => {
 }
 
 /**
- * @returns {Array}
+ * @returns {Promise<Array<String>>}
  * Objects, some properties:
     avatar_url: org avatar,
     description: -,
@@ -50,7 +50,6 @@ const setHooks = async () => {
  */
 const fetchOrgs = () =>
   new Promise(async (resolve, reject) => {
-    /*
     const orgsURL = 'https://api.github.com/user/orgs'
 
     const orgsRes =
@@ -60,35 +59,45 @@ const fetchOrgs = () =>
       return resolve({}) // empty {}
     }
 
-    resolve(orgsRes.json())
-    */
+    // this could take a while, load spinner perhaps
 
-    // test data for now: save test data for later
-    resolve(
-      [
-        {
-          avatar_url: 'https://cdn.pixabay.com/photo/2014/11/30/14/11/kitty-551554__340.jpg',
-          description: 'test',
-          hooks_url: 'test',
-          issues_url: 'test',
-          login: 'test',
-          members_url: 'test',
-          repos_url: 'test',
-          url: 'test'
-        },
-        {
-          avatar_url: 'https://images.pexels.com/photos/356378/pexels-photo-356378.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-          description: 'test2',
-          hooks_url: 'test2',
-          issues_url: 'test2',
-          login: 'test2',
-          members_url: 'test2',
-          repos_url: 'test2',
-          url: 'test2'
+    // always set hooks for orgs,
+    // in db see what user wants to be messaged about
+
+    // get/set hooks for all orgs
+    // if fails for org, do not resolve
+
+    const allOrgs = await orgsRes.json()
+    const accessibleOrgs = []
+
+    for (let i = 0; i < allOrgs.length; i++) {
+      try { // if doesn't work, try without json()
+        const orgHooksRes = await fetchHooks(allOrgs[i])
+
+        // only orgs where user has access to hooks
+        if (orgHooksRes.ok) {
+          accessibleOrgs.push(allOrgs[i])
+        
+          console.log(await orgHooksRes.json())
+        } else {
+          throw new Error(orgHooksRes.status)
         }
-      ]
-    )
+      } catch (error) {
+        console.error(
+          `Could not get ${allOrgs[i].login} hooks: ${error}`
+        )
+      }
+    }
+
+    console.log(accessibleOrgs.length)
+    console.log(allOrgs.length)
+    console.log(accessibleOrgs[0])
+    console.log(allOrgs[0])
+    resolve(accessibleOrgs)
+    // resolve(allOrgs)
   })
+
+const fetchHooks = org => window.fetch(org.hooks_url, getGETReqObj())
 
 /**
  * @param {Object} org object

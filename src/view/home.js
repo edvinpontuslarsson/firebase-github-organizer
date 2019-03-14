@@ -30,7 +30,6 @@ const getHomeView = userData =>
 
 const appendOrgs = (userData, allOrgs) => {
   const allOrgsDiv = document.getElementById('all-orgs-div')
-
   allOrgs.forEach(org => {
     const orgDiv = document.createElement('div')
     orgDiv.setAttribute('class', 'org-div')
