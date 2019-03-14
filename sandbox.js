@@ -17,11 +17,5 @@ function getReleaseSubscribers(orgName) {
 
 const oldArr = ['1', '2']
 const newArr = []
-
-oldArr.forEach(item => {
-    if (item === '2') newArr.push(item)
-})
-
-console.log(newArr)
-console.log(newArr[0])
+console.log(newArr.length)
 

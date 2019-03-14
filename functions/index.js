@@ -10,36 +10,37 @@ const app = express()
 // enables Cross-Origin Resource Sharing
 app.use(cors({ origin: true }))
 
-app.post('/', async (req, res) => {
+app.post('/', (req, res) => {
     const payload = req.body
 
     try {
-        await messageServiceWorker(payload)
+        messageServiceWorker(payload).then(() => {
+            // TODO: set in DB latest/${username}, listen for that in client
+
+            // TODO: get secret from DB, make sure from GitHub
+            // secret shoud be in db
+
+            // snapshot.key()
+
+            return res.sendStatus(200)
+        })
     } catch (error) {
         console.log(`Error sending service worker message: ${error}`)
     }
-
-    // TODO: set in DB latest/${username}, listen for that in client
-
-    // TODO: get secret from DB, make sure from GitHub
-    // secret shoud be in db
-
-    // snapshot.key()
-
-    return res.sendStatus(200)
 })
 
 /**
  * Asynchronous
  * @param payload - req.body
  */
-const messageServiceWorker = async payload => {
+const messageServiceWorker = payload => {
     try {
-        const token = await getToken(payload)
-        const message = { data: payload, token }
+        getToken(payload).then(token => {
+            const message = { data: payload, token }
     
-        admin.messaging().send(message)
-        resolve()
+            admin.messaging().send(message)
+            resolve()
+        })
     } catch (error) {
         throw new Error(error)
     }

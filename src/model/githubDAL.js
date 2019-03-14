@@ -2,40 +2,6 @@
 
 import auth from './auth'
 
-// Event types for hooks:
-// https://developer.github.com/v3/activity/events/types/
-
-/**
- * Trigger in fetchOrgRepoData
- * Hooks for org:
- * RepositoryEvent: repo CRUD events,
- * 
- * Hooks for each repo:
- * ReleaseEvent: -,
- * IssuesEvent: issue CRUD events,
- * PushEvent: for commits
- */
-const setHooks = async () => {
-  const hostURL = 'https://gitedvinhub.firebaseapp.com/'
-
-  const hookPostObj = {
-    name: 'web',
-    active: 'true',
-    events: [
-      'repository',
-      'release',
-      'issues',
-      'push'
-    ],
-    config: {
-      url: hostURL,
-      content_type: 'json'
-    }
-  }
-
-  const hookPost = JSON.stringify(hookPostObj)
-}
-
 /**
  * @returns {Promise<Array<String>>}
  * Objects, some properties:
@@ -59,28 +25,22 @@ const fetchOrgs = () =>
       return resolve({}) // empty {}
     }
 
-    // this could take a while, load spinner perhaps
-
-    // always set hooks for orgs,
-    // in db see what user wants to be messaged about
-
-    // get/set hooks for all orgs
-    // if fails for org, do not resolve
-
     const allOrgs = await orgsRes.json()
     const accessibleOrgs = []
 
     for (let i = 0; i < allOrgs.length; i++) {
-      try { // if doesn't work, try without json()
+      try {
         const orgHooksRes = await fetchHooks(allOrgs[i])
 
-        // only orgs where user has access to hooks
+        // ignores organizations without user access to hooks
         if (orgHooksRes.ok) {
           accessibleOrgs.push(allOrgs[i])
         
-          console.log(await orgHooksRes.json())
-        } else {
-          throw new Error(orgHooksRes.status)
+          const orgHooks = await orgHooksRes.json()
+          
+          if (orgHooks.length === 0) {
+            setHooks(allOrgs[i])
+          }
         }
       } catch (error) {
         console.error(
@@ -89,15 +49,37 @@ const fetchOrgs = () =>
       }
     }
 
-    console.log(accessibleOrgs.length)
-    console.log(allOrgs.length)
-    console.log(accessibleOrgs[0])
-    console.log(allOrgs[0])
     resolve(accessibleOrgs)
-    // resolve(allOrgs)
   })
 
 const fetchHooks = org => window.fetch(org.hooks_url, getGETReqObj())
+
+/** 
+ * Hooks for each repo:
+ * ReleaseEvent: -,
+ * IssuesEvent: issue CRUD events,
+ * PushEvent: for commits
+ */
+const setHooks = async () => {
+  const hostURL = 'https://gitedvinhub.firebaseapp.com/' // I guess
+
+  const hookPostObj = {
+    name: 'web',
+    active: 'true',
+    events: [
+      'repository',
+      'release',
+      'issues',
+      'push'
+    ],
+    config: {
+      url: hostURL,
+      content_type: 'json'
+    }
+  }
+
+  const hookPost = JSON.stringify(hookPostObj)
+}
 
 /**
  * @param {Object} org object
