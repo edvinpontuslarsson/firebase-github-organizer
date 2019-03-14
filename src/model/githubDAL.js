@@ -61,7 +61,7 @@ const fetchHooks = org => window.fetch(org.hooks_url, getGETReqObj())
  * PushEvent: for commits
  */
 const setHooks = async () => {
-  const hostURL = 'https://gitedvinhub.firebaseapp.com/' // I guess
+  const hostURL = 'https://us-central1-gitedvinhub.cloudfunctions.net/server/'
 
   const hookPostObj = {
     name: 'web',
