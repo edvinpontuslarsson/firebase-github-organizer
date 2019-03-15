@@ -7,40 +7,23 @@ admin.initializeApp()
 
 const app = express()
 
-/**
- * /////////// 
- * OBS IMPORTANT INFO!
- * Cloud functions uses old node version,
- * can't handle async-await
- * ///////////
- */
-
 // enables Cross-Origin Resource Sharing
 app.use(cors({ origin: true }))
 
 app.post('/', (req, res) => {
-    const payload = req.body
+    const eventHeader = req.headers['X-GitHub-Event']
 
-    // OK, can today simulate GH hooks w. postman,
-    // can use db
-
-    try {
-        // messageServiceWorker(payload).then(() => {
-            
-            // TODO: set in DB latest/${username}, listen for that in client
-
-            // snapshot.key()
-            res.status(200)
-            
-            // Have to return, also up ofc
-
-            return res.json({
-                greeting: 'Hello from the clouds!'
-            })
-        // })
-    } catch (error) {
-        console.log(`Error sending service worker message: ${error}`)
-    }
+    if (eventHeader === 'repository' ||
+        eventHeader === 'release' ||
+        eventHeader === 'issues' ||
+        eventHeader === 'push') {
+            notifySubscribers(eventHeader, req.body)
+                .then(() => {
+                    return res.sendStatus(200)
+                })
+        } else {
+            return res.sendStatus(200)
+        } 
 })
 
 /**
@@ -71,6 +54,19 @@ const getToken = payload => new Promise(resolve => {
      * message all tokens
      */
 })
+
+// OK, can today simulate GH hooks w. postman,
+// subscribed to issues
+
+const notifySubscribers = (eventHeader, reqBody) => {
+    getSubTokens(eventHeader, reqBody).then(tokens => {
+        
+    })
+}
+
+const getSubTokens = (eventHeader, reqBody) => {
+    admin.database().ref(/** query here, etc */)
+}
 
 const server = functions.https.onRequest(app)
 
