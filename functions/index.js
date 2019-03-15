@@ -10,13 +10,17 @@ const app = express()
 // enables Cross-Origin Resource Sharing
 app.use(cors({ origin: true }))
 
-app.post('/', (req, res) => { // for testing, replace later
+app.post('/', (req, res) => {
     const eventHeader = req.headers['x-custom-event']
-    console.log(eventHeader)
+    
     if (eventHeader === 'repository' ||
         eventHeader === 'release' ||
         eventHeader === 'issues' ||
         eventHeader === 'push') {
+            // TODO:
+            // put in db, latest update for org,
+            // client then knows to re-fetch
+
             notifySubscribers(eventHeader, req.body)
             
             return res.sendStatus(200)
@@ -25,20 +29,26 @@ app.post('/', (req, res) => { // for testing, replace later
         } 
 })
 
-// OK, can today simulate GH hooks w. postman,
-// subscribed to issues
-
 const notifySubscribers = (eventHeader, reqBody) => {
     getSubTokens(eventHeader, reqBody).then(tokens => {
-            
-        console.log('Logging works?')
-        console.log(tokens)
+        tokens.forEach(token => {
+            const title =
+                `GitHub update in ${reqBody.repository.full_name}`
+            const body =
+                `${eventHeader} ${reqBody.action}`
 
-        /**
-         * const message = { data: payload, token }
-    
+            const message = {
+                data: {
+                    title,
+                    body
+                },
+                token
+            }
+
             admin.messaging().send(message)
-         */
+                .then(() => { console.log(`Messaged ${token} successfully`)})
+                .catch(error => { console.error(error) })
+        })
     })
 }
 
@@ -49,6 +59,7 @@ const getSubTokens = (eventHeader, reqBody) =>
         ).once('value', snapshot => {
             const tokens = Object.values(snapshot.val())
                 .map(item => item.token)
+
             resolve(tokens)
         })
     })
