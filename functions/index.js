@@ -18,9 +18,8 @@ app.post('/', (req, res) => { // for testing, replace later
         eventHeader === 'issues' ||
         eventHeader === 'push') {
             notifySubscribers(eventHeader, req.body)
-               // .then(() => {
-                    return res.sendStatus(200)
-                //})
+            
+            return res.sendStatus(200)
         } else {
             return res.sendStatus(200)
         } 
@@ -48,7 +47,9 @@ const getSubTokens = (eventHeader, reqBody) =>
         admin.database().ref(
             `organizations/${reqBody.sender.login}/subscriptions/${eventHeader}`
         ).once('value', snapshot => {
-            resolve(snapshot.val()) // OBject.keys
+            const tokens = Object.values(snapshot.val())
+                .map(item => item.token)
+            resolve(tokens)
         })
     })
 
