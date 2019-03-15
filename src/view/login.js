@@ -27,13 +27,14 @@ const renderLoginView = () => {
  * @param {HTMLElement} section - content section
  */
 const login = async (loginBtn, section) => {
-  // hides loginBtn & sets load spinner
   loginBtn.setAttribute('class', 'hidden')
-  const spinnerDiv = renderAndGetSpinnerDiv()
-  section.appendChild(spinnerDiv)
 
   await auth.login()
   await messaging.initialize()
+
+  // load spinner while waiting
+  const spinnerDiv = renderAndGetSpinnerDiv()
+  section.appendChild(spinnerDiv)
 
   const userData = await auth.getUserData()
   const orgs = await githubDAL.fetchOrgs()
@@ -47,7 +48,7 @@ const renderAndGetSpinnerDiv = () => {
   const spinnerDiv = document.createElement('div')
   spinnerDiv.innerHTML = 
   `
-    <p>Fetching data, please wait</p>
+    <p id="spinner-info">Fetching GitHub data, please wait...</p>
     <div class="spinner"></div>
   `
   return spinnerDiv
