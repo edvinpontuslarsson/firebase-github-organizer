@@ -30,14 +30,12 @@ const storeSubscription = async (orgName, eventType) => {
   ).set({ username })
 }
 
-// delete, add test_user, add again
-
 const isSubscribed = (orgName, eventType) =>
   new Promise(async resolve => {
     const username = auth.getUsername()
 
     db().ref(
-      `organizations/${orgName}/subscriptions/${eventType}/username`
+      `organizations/${orgName}/subscriptions/${eventType}/${username}/username`
     ).once('value', snapshot => {
       resolve(snapshot.val() === username)
     })
