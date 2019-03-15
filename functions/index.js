@@ -52,8 +52,21 @@ const notifySubscribers = (eventHeader, reqBody) => {
     })
 }
 
-const getSubTokens = (eventHeader, reqBody) =>
+const getSubTokens = (eventHeader, reqBody) => 
     new Promise(resolve => {
+
+        // TODO: get usernames here,
+
+        // then get tokens from usernames
+
+        /**
+         * const getToken = username => new Promise(resolve => {
+                db().ref(`tokens/${username}/token`).once('value', snapshot => {
+                    resolve(snapshot.val())
+                })
+            })
+         */
+
         admin.database().ref(
             `organizations/${reqBody.sender.login}/subscriptions/${eventHeader}`
         ).once('value', snapshot => {
