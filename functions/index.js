@@ -10,9 +10,9 @@ const app = express()
 // enables Cross-Origin Resource Sharing
 app.use(cors({ origin: true }))
 
-app.post('/', (req, res) => {
-    const eventHeader = req.headers['X-GitHub-Event']
-
+app.post('/', (req, res) => { // for testing, replace later
+    const eventHeader = req.headers['x-custom-event']
+    console.log(eventHeader)
     if (eventHeader === 'repository' ||
         eventHeader === 'release' ||
         eventHeader === 'issues' ||
@@ -26,47 +26,32 @@ app.post('/', (req, res) => {
         } 
 })
 
-/**
- * Asynchronous
- * @param payload - req.body
- */
-const messageServiceWorker = payload => {
-    try {
-        getToken(payload).then(token => {
-            const message = { data: payload, token }
-    
-            admin.messaging().send(message)
-            resolve()
-        })
-    } catch (error) {
-        throw new Error(error)
-    }
-}
-
-/**
- * @param payload - req.body
- * @returns {Promise<String>} null if payload is incorrect
- */
-const getToken = payload => new Promise(resolve => {
-    // TODO: 
-    /**
-     * get whole org repository/release/issues/push object,
-     * message all tokens
-     */
-})
-
 // OK, can today simulate GH hooks w. postman,
 // subscribed to issues
 
 const notifySubscribers = (eventHeader, reqBody) => {
     getSubTokens(eventHeader, reqBody).then(tokens => {
-        
+            
+        console.log('Logging works?')
+        console.log(tokens)
+
+        /**
+         * const message = { data: payload, token }
+    
+            admin.messaging().send(message)
+         */
     })
 }
 
-const getSubTokens = (eventHeader, reqBody) => {
-    admin.database().ref(/** query here, etc */)
-}
+const getSubTokens = (eventHeader, reqBody) =>
+    new Promise(resolve => {
+        admin.database().ref(
+            `organizations/${reqBody.sender.login}
+            /subscriptions/${eventHeader}`
+        ).once('value', snapshot => {
+            resolve(snapshot.val())
+        })
+    })
 
 const server = functions.https.onRequest(app)
 
