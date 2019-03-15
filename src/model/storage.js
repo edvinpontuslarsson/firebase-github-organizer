@@ -3,12 +3,20 @@
 import firebase from 'firebase/app'
 import 'firebase/database'
 import auth from './auth'
-import cryptoRandomString from 'crypto-random-string' // maybe for 1 GH secret
 
 const storeToken = token => {
   const username = auth.getUsername()
   db().ref(`tokens/${username}`).set({ token })
 }
+
+/**
+ * @returns {Promise<String>}
+ */
+const getServerURL = () => new Promise(resolve => {
+  db().ref('server_url').once('value', snapshot => {
+    resolve(snapshot.val())
+  })
+})
 
 const storeSubscription = async (orgName, eventType) => {
   const username = auth.getUsername()
@@ -47,6 +55,7 @@ const getToken = username => new Promise(resolve => {
 // I have now implemented "Basic write operations"
 
 export default {
+  getServerURL,
   storeToken,
   storeSubscription,
   isSubscribed

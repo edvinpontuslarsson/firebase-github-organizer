@@ -1,6 +1,7 @@
 'use strict'
 
 import auth from './auth'
+import storage from './storage'
 
 /**
  * @returns {Promise<Array<String>>}
@@ -54,14 +55,14 @@ const fetchOrgs = () =>
 
 const fetchHooks = org => window.fetch(org.hooks_url, getGETReqObj())
 
-/** 
+/**  
  * Hooks for each repo:
  * ReleaseEvent: -,
  * IssuesEvent: issue CRUD events,
  * PushEvent: for commits
  */
 const setHooks = async () => {
-  const hostURL = 'https://us-central1-gitedvinhub.cloudfunctions.net/server/'
+  const serverURL = await storage.getServerURL()
 
   const hookPostObj = {
     name: 'web',
@@ -73,7 +74,7 @@ const setHooks = async () => {
       'push'
     ],
     config: {
-      url: hostURL,
+      url: serverURL,
       content_type: 'json'
     }
   }

@@ -21,13 +21,13 @@ app.use(cors({ origin: true }))
 app.post('/', (req, res) => {
     const payload = req.body
 
+    // OK, can today simulate GH hooks w. postman,
+    // can use db
+
     try {
         // messageServiceWorker(payload).then(() => {
             
             // TODO: set in DB latest/${username}, listen for that in client
-
-            // TODO: get secret from DB, make sure from GitHub
-            // secret shoud be in db
 
             // snapshot.key()
             res.status(200)
@@ -65,17 +65,11 @@ const messageServiceWorker = payload => {
  * @returns {Promise<String>} null if payload is incorrect
  */
 const getToken = payload => new Promise(resolve => {
-    const secret = payload.secret
-
     // TODO: 
     /**
      * get whole org repository/release/issues/push object,
      * message all tokens
      */
-
-    // admin.database().ref(`tokens/${secret}`).once('value')
-        .then(snapshot => resolve(snapshot.val().token))
-        .catch(error => reject(new Error(error)))
 })
 
 const server = functions.https.onRequest(app)

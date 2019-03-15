@@ -39,7 +39,7 @@ const login = async (loginBtn, section) => {
   const userData = await auth.getUserData()
   const orgs = await githubDAL.fetchOrgs()
 
-  spinnerDiv.setAttribute('class', 'hidden')
+  section.removeChild(spinnerDiv)
 
   home.renderHomeView(userData, orgs)
 }
