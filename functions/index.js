@@ -32,7 +32,6 @@ app.post('/', (req, res) => {
 
 const notifySubscribers = (eventHeader, reqBody) => {
     getSubTokens(eventHeader, reqBody).then(tokens => {
-        console.log(tokens)
         tokens.forEach(token => {
             const title =
                 `GitHub update in ${reqBody.repository.full_name}`
@@ -56,25 +55,25 @@ const notifySubscribers = (eventHeader, reqBody) => {
 
 const getSubTokens = (eventHeader, reqBody) => 
     new Promise(resolve => {
-        getSubNames(eventHeader, reqBody)
-            .then(subNames => {
+        getSubNames(eventHeader, reqBody).then(subNames => {
+            admin.database().ref('tokens').once('value', snapshot => {
+                const allTokens = snapshot.val()
 
-                // get all tokens, 
-                // filter out those not having right usernames
-
-                admin.database().ref('tokens').once('value', snapshot => {
-                    const tokens = snapshot.val()
-                    
-                })
+                const subTokens = Object.keys(allTokens)
+                    .filter(user => isItemInArray(user, subNames))
+                    .map(user => allTokens[`${user}`].token)
+                
+                resolve(subTokens)
             })
+        })
     })
 
-/**
- * Function inspired by this:
- * https://stackoverflow.com/questions/47574701/returning-an-array-of-promises-for-promise-all-using-filter-not-working
- * @param {any} delivery 
- */
-const newPromise = delivery => new Promise(resolve => resolve(delivery))
+const isItemInArray = (item, arr) => {
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i] === item) return true
+    }
+    return false
+}
 
 const getSubNames = (eventHeader, reqBody) =>
     new Promise(resolve => {
