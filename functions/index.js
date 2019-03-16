@@ -31,7 +31,8 @@ app.post('/', (req, res) => {
 })
 
 const notifySubscribers = (eventHeader, reqBody) => {
-    getSubTokens(eventHeader, reqBody).then(tokens => {/*
+    getSubTokens(eventHeader, reqBody).then(tokens => {
+        console.log(tokens)
         tokens.forEach(token => {
             const title =
                 `GitHub update in ${reqBody.repository.full_name}`
@@ -49,37 +50,41 @@ const notifySubscribers = (eventHeader, reqBody) => {
             admin.messaging().send(message)
                 .then(() => { console.log(`Messaged ${token} successfully`)})
                 .catch(error => { console.error(error) })
-        })*/
+        })
     })
 }
 
 const getSubTokens = (eventHeader, reqBody) => 
     new Promise(resolve => {
-        // then get tokens from usernames
-
-        /**
-         * const getToken = username => new Promise(resolve => {
-                db().ref(`tokens/${username}/token`).once('value', snapshot => {
-                    resolve(snapshot.val())
-                })
-            })
-         */
-
         getSubNames(eventHeader, reqBody)
             .then(subNames => {
-                console.log(subNames)
+
+                // get all tokens, 
+                // filter out those not having right usernames
+
+                admin.database().ref('tokens').once('value', snapshot => {
+                    const tokens = snapshot.val()
+                    
+                })
             })
     })
+
+/**
+ * Function inspired by this:
+ * https://stackoverflow.com/questions/47574701/returning-an-array-of-promises-for-promise-all-using-filter-not-working
+ * @param {any} delivery 
+ */
+const newPromise = delivery => new Promise(resolve => resolve(delivery))
 
 const getSubNames = (eventHeader, reqBody) =>
     new Promise(resolve => {
         admin.database().ref(
             `organizations/${reqBody.sender.login}/subscriptions/${eventHeader}`
         ).once('value', snapshot => {
-            const tokens = Object.values(snapshot.val())
+            const usernames = Object.values(snapshot.val())
                 .map(item => item.username)
 
-            resolve(tokens)
+            resolve(usernames)
 
            resolve(snapshot.val())
         })

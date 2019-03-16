@@ -1,21 +1,29 @@
 'use strict'
-/*
-let subscribers
 
-if (payload.eventType === 'release') {
-    subscribers = getReleaseSubscribers(payload.org_name)
+const subNames = ['Gösta', 'Doris']
+
+const allTokens = {
+    Gösta: {
+        token: '123'
+    },
+    Doris: {
+        token: 'abc'
+    },
+    Batman: {
+        token: 'not_subscribed'
+    }
 }
 
-subscribers.forEach(sub => {
-    // message to token, with trycatch
-})
-
-function getReleaseSubscribers(orgName) {
-    return query(`organisations/${orgName}/release_subscribers`)
+const isItemInArray = (item, arr) => {
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i] === item) return true
+    }
+    return false
 }
-*/
 
-const oldArr = ['1', '2']
-const newArr = []
-console.log(newArr.length)
+const subTokens = Object.keys(allTokens)
+    .filter(user => isItemInArray(user, subNames))
+    .map(user => allTokens[`${user}`].token)
+
+console.log(subTokens)
 

@@ -36,12 +36,6 @@ const fetchOrgs = () =>
         // ignores organizations without user access to hooks
         if (orgHooksRes.ok) {
           accessibleOrgs.push(allOrgs[i])
-        
-          const orgHooks = await orgHooksRes.json()
-          
-          if (orgHooks.length === 0) {
-            setHooks(allOrgs[i])
-          }
         }
       } catch (error) {
         console.error(
@@ -56,12 +50,14 @@ const fetchOrgs = () =>
 const fetchHooks = org => window.fetch(org.hooks_url, getGETReqObj())
 
 /**  
- * Hooks for each repo:
- * ReleaseEvent: -,
- * IssuesEvent: issue CRUD events,
- * PushEvent: for commits
+ * 
  */
-const setHooks = async () => {
+const setHooks = async org => {
+  
+  // TODO: get hooks, if none set
+
+  // do this every time user enters org page
+  
   const serverURL = await storage.getServerURL()
 
   const hookPostObj = {
