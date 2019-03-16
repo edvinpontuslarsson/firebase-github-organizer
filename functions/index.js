@@ -17,6 +17,7 @@ app.post('/', (req, res) => {
         eventHeader === 'release' ||
         eventHeader === 'issues' ||
         eventHeader === 'push') {
+            
             // TODO:
             // put in db, latest update for org,
             // client then knows to re-fetch
@@ -30,7 +31,7 @@ app.post('/', (req, res) => {
 })
 
 const notifySubscribers = (eventHeader, reqBody) => {
-    getSubTokens(eventHeader, reqBody).then(tokens => {
+    getSubTokens(eventHeader, reqBody).then(tokens => {/*
         tokens.forEach(token => {
             const title =
                 `GitHub update in ${reqBody.repository.full_name}`
@@ -48,15 +49,12 @@ const notifySubscribers = (eventHeader, reqBody) => {
             admin.messaging().send(message)
                 .then(() => { console.log(`Messaged ${token} successfully`)})
                 .catch(error => { console.error(error) })
-        })
+        })*/
     })
 }
 
 const getSubTokens = (eventHeader, reqBody) => 
     new Promise(resolve => {
-
-        // TODO: get usernames here,
-
         // then get tokens from usernames
 
         /**
@@ -67,13 +65,23 @@ const getSubTokens = (eventHeader, reqBody) =>
             })
          */
 
+        getSubNames(eventHeader, reqBody)
+            .then(subNames => {
+                console.log(subNames)
+            })
+    })
+
+const getSubNames = (eventHeader, reqBody) =>
+    new Promise(resolve => {
         admin.database().ref(
             `organizations/${reqBody.sender.login}/subscriptions/${eventHeader}`
         ).once('value', snapshot => {
             const tokens = Object.values(snapshot.val())
-                .map(item => item.token)
+                .map(item => item.username)
 
             resolve(tokens)
+
+           resolve(snapshot.val())
         })
     })
 
