@@ -95,11 +95,10 @@ const setHooks = async org => {
  * issues_url: -,
  * hooks_url: -,
  * language: programming language,
- * license: { name: - }
  * name: name of repo,
  * releases_url: result: [{ tag_name, name, body, published_at }],
- * issues_url: result: [{ state, title, updated_at, body, user: {login} }],
- * commits_url: -,
+ * issues_url: result: [{ state, title, updated_at, body, user.login }],
+ * commits_url: result: [{ commit.message, commit.author.name, commit.author.date }],
  * url: url to this repo
  */
 const fetchOrgRepoData = org =>

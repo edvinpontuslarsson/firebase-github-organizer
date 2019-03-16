@@ -11,8 +11,6 @@ const renderOrgView = async (userData, allOrgs, org) => {
 
   const repos = await githubDAL.fetchOrgRepoData(org)
 
-  console.log(repos)
-
   const orgDiv = appendAndGetOrgDiv(section, repos)
   orgDiv.setAttribute('id', `org-view-${org.login}-div`)
 
@@ -124,7 +122,7 @@ const appendOneIssueDiv = (issuesDiv, issue) => {
   issueDiv.innerHTML = `
     <h4>${xss(issue.title)}</h4>
     <p>
-      State: ${xss(issue.state)} ${xss(issue.updated_at)}
+      ${xss(issue.updated_at)} State: ${xss(issue.state)}
       <br> Created by: ${xss(issue.user.login)}
     </p>
     <p>${xss(issue.body)}</p>
@@ -133,7 +131,29 @@ const appendOneIssueDiv = (issuesDiv, issue) => {
 }
 
 const appendCommitsDiv = async (repoDiv, commitsURL) => {
-  // TODO: implement this
+  const commitsDiv = document.createElement('div')
+  repoDiv.appendChild(commitsDiv)
+
+  const commitsHeader = document.createElement('h3')
+  commitsHeader.innerText = 'Commits'
+  commitsDiv.appendChild(commitsHeader)
+
+  const commits =
+    await githubDAL.fetchFromRepoURL(commitsURL)
+
+  commits.forEach(commit => {
+    appendOneCommitDiv(commitsDiv, commit)
+  })
+}
+
+const appendOneCommitDiv = (commitsDiv, commit) => {
+  const commitDiv = document.createElement('div')
+  commitDiv.innerHTML = `
+    <h4>${xss(commit.commit.message)}</h4>
+    By ${xss(commit.commit.author.name)} 
+    at ${xss(commit.commit.author.date)}
+  `
+  commitsDiv.appendChild(commitDiv)
 }
 
 export default { renderOrgView }
