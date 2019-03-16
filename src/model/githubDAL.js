@@ -43,7 +43,7 @@ const fetchOrgs = () =>
         )
       }
     }
-
+    
     resolve(accessibleOrgs)
   })
 
