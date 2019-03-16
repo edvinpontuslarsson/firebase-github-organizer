@@ -10,10 +10,7 @@ const initialize = () => {
 
     messaging.requestPermission()
         .then(() => messaging.getToken())
-        .then(token => {
-          console.log(token)
-          storage.storeToken(token) // make sure this latest token is in DB
-        })
+        .then(token => { storage.storeToken(token) })
         .catch(() => { console.log(`No notifications`) })
 }
 
@@ -23,3 +20,4 @@ export default {
   initialize,
   getFirebaseMessaging
 }
+

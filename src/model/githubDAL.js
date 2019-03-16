@@ -81,21 +81,17 @@ const setHooks = async org => {
 /**
  * @param {Object} org object
  * @returns {Object} objects, some props:
- * collaborators_url: -,
- * commits_url: -,
- * contributors_url: -,
  * created_at: -,
  * description: -,
+ * fetched_commits: [{}],
+ * fetched_issues: [{ state, title, created_at, body, user: {login} }],
+ * fetched_releases: [{}]
  * has_issues: bool,
  * issues_url: -,
  * hooks_url: -,
  * language: programming language,
  * license: { name: - }
  * name: name of repo,
- * open_issues_count: int
- * private: bool,
- * updated_at: Date,
- * releases_url: -
  * url: url to this repo
  */
 const fetchOrgRepoData = org =>

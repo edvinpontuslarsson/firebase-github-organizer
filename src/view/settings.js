@@ -92,15 +92,13 @@ const getNotificationSetting = (userData, allorgs, org, eventType, isNotificatio
  */
 const changeSubscriptionSetting = async (userData, allorgs, org, eventType, isNotification) => {
     if (isNotification) {
-        // TODO: remove subscription
-        console.log('remove subscription')
+        await storage.removeSubscription(org.login, eventType)
     } else {
-        console.log('add subscription')
         await storage.storeSubscription(org.login, eventType)
-        
-        // re-renders page
-        renderSettingsView(userData, allorgs) // now the same because doesn't fetch new db data 
     }
+
+    // re-renders page
+    renderSettingsView(userData, allorgs)
 }
 
 export default { renderSettingsView }

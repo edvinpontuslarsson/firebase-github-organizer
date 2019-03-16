@@ -30,6 +30,14 @@ const storeSubscription = async (orgName, eventType) => {
   ).set({ username })
 }
 
+const removeSubscription = (orgName, eventType) => {
+  const username = auth.getUsername()
+
+  db().ref(
+    `organizations/${orgName}/subscriptions/${eventType}/${username}/username`
+  ).remove()
+}
+
 const isSubscribed = (orgName, eventType) =>
   new Promise(async resolve => {
     const username = auth.getUsername()
@@ -47,5 +55,6 @@ export default {
   getServerURL,
   storeToken,
   storeSubscription,
+  removeSubscription,
   isSubscribed
 }

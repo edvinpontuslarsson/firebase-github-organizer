@@ -4,6 +4,7 @@ import contentSection from './contentSection'
 import menu from './menu'
 import githubDAL from '../model/githubDAL'
 import messaging from '../model/messaging'
+import xss from 'xss'
 
 const renderOrgView = async (userData, allOrgs, org) => {
   const section = contentSection.getClearedContentSection()
@@ -12,14 +13,15 @@ const renderOrgView = async (userData, allOrgs, org) => {
 
   console.log(repos)
 
-  const orgDiv = getOrgDiv(userData, allOrgs, org, repos)
+  const orgDiv = appendAndGetOrgDiv(section, repos)
   orgDiv.setAttribute('id', `org-view-${org.login}-div`)
-  section.appendChild(orgDiv)
 
   orgDiv.insertBefore(
     menu.getMenuDiv(userData, allOrgs),
     orgDiv.firstChild
   )
+
+  // TODO: set hooks here
   
   const firebaseMessaging = messaging.getFirebaseMessaging()
   firebaseMessaging.onMessage(payload => {
@@ -30,10 +32,65 @@ const renderOrgView = async (userData, allOrgs, org) => {
   })
 }
 
-const getOrgDiv = (userData, allOrgs, org, repos) => {
+const appendAndGetOrgDiv = (section, repos) => {
   const orgDiv = document.createElement('div')
+  section.appendChild(orgDiv)
+
+  repos.forEach(repo => {
+    appendRepoDiv(orgDiv, repo)
+  })
 
   return orgDiv
 }
 
+/**
+ * @param {HTMLElement} orgDiv 
+ * @param {Object} repo repo data object
+ */
+const appendRepoDiv = (orgDiv, repo) => {
+  const repoDiv = document.createElement('div')
+  orgDiv.appendChild(repoDiv)
+
+  const repoHeader = document.createElement('h2')
+  repoHeader.innerHTML = 
+      `<a href="${repo.url}">${xss(repo.name)}</a>`
+  repoDiv.appendChild(repoHeader)
+
+  const info = document.createElement('p')
+  info.innerHTML = `
+    Language: ${xss(repo.language)} License: ${xss(license.name)} <br>
+    Description: ${xss(repo.description)} <br>
+    Created at: ${xss(repo.created_at)}
+  `
+  repoDiv.appendChild(info)
+
+  appendReleasesDiv(repoDiv, repo.fetched_issues)
+  appendIssuesDiv(repoDiv, repo.fetched_issues)
+  appendCommitsDiv(repoDiv, repo.fetched_issues)
+}
+
+/**
+ * @param {HTMLElement} repoDiv 
+ * @param {Array} releases 
+ */
+const appendReleasesDiv = (repoDiv, releases) => {
+  // TODO: implement this
+}
+
+const appendIssuesDiv = (repoDiv, issues) => {
+  const issuesDiv = document.createElement('div')
+  repoDiv.appendChild(issuesDiv)
+
+  
+}
+
+const appendOneIssueDiv = (issuesDiv, issue) => {
+
+}
+
+const appendCommitsDiv = (repoDiv, releases) => {
+  // TODO: implement this
+}
+
 export default { renderOrgView }
+
