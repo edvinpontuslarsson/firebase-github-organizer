@@ -17,6 +17,9 @@ const initialize = () => {
         .catch(() => { console.log(`No notifications`) })
 }
 
+const getFirebaseMessaging = () => firebase.messaging()
+
 export default {
-  initialize
+  initialize,
+  getFirebaseMessaging
 }
