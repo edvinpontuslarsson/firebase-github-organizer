@@ -26,11 +26,9 @@ const renderOrgView = async (userData, allOrgs, org) => {
    * see if orgdiv (getByID) exists on DOM,
    * if it does exist, re-renderOrgView
    * renderOrgView(userData, allOrgs, org)
-   * 
-   * Hmm, try to redo in cloud funcs, just send org name &
-   * event info, yes,
-   * handle individually here & in service worker
    */
+
+   
 }
 
 const getOrgDiv = (userData, allOrgs, org, repos) => {
