@@ -52,13 +52,15 @@ const appendRepoDiv = (orgDiv, repo) => {
   orgDiv.appendChild(repoDiv)
 
   const repoHeader = document.createElement('h2')
+  const repoURL = 
+    repo.url.replace('api.', '').replace('/repos', '')
   repoHeader.innerHTML = 
-      `<a href="${repo.url}">${xss(repo.name)}</a>`
+      `<a href="${repoURL}">${xss(repo.name)}</a>`
   repoDiv.appendChild(repoHeader)
 
   const info = document.createElement('p')
   info.innerHTML = `
-    Language: ${xss(repo.language)} License: ${xss(license.name)} <br>
+    Language: ${xss(repo.language)} License: ${xss(repo.license.name)} <br>
     Description: ${xss(repo.description)} <br>
     Created at: ${xss(repo.created_at)}
   `
@@ -81,7 +83,7 @@ const appendIssuesDiv = (repoDiv, issues) => {
   const issuesDiv = document.createElement('div')
   repoDiv.appendChild(issuesDiv)
 
-  
+
 }
 
 const appendOneIssueDiv = (issuesDiv, issue) => {
