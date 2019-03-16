@@ -15,10 +15,12 @@ firebase.initializeApp(config)
 
 const messaging = firebase.messaging()
 
-messaging.setBackgroundMessageHandler(payload => {    
-    const title = payload.data.title
+messaging.setBackgroundMessageHandler(payload => {
+    const title = `GitHub update in ${payload.data.repo_name}`
 
-    const options = { body: payload.data.body }
+    const options = {
+        body: `${payload.data.event} ${payload.data.action}`
+    }
     
     return self.registration.showNotification(
         title, options

@@ -11,18 +11,13 @@ const app = express()
 app.use(cors({ origin: true }))
 
 app.post('/', (req, res) => {
-    const eventHeader = req.headers['x-custom-event']
+    const eventHeader = req.headers['x-github-event']
     
     if (eventHeader === 'repository' ||
         eventHeader === 'release' ||
         eventHeader === 'issues' ||
         eventHeader === 'push') {
-            
-            // TODO:
-            // put in db, latest update for org,
-            // client then knows to re-fetch
-
-            notifySubscribers(eventHeader, req.body)
+            notify(eventHeader, req.body)
             
             return res.sendStatus(200)
         } else {
@@ -30,24 +25,20 @@ app.post('/', (req, res) => {
         } 
 })
 
-const notifySubscribers = (eventHeader, reqBody) => {
+const notify = (eventHeader, reqBody) => {
     getSubTokens(eventHeader, reqBody).then(tokens => {
         tokens.forEach(token => {
-            const title =
-                `GitHub update in ${reqBody.repository.full_name}`
-            const body =
-                `${eventHeader} ${reqBody.action}`
-
             const message = {
                 data: {
-                    title,
-                    body
+                    org_name: reqBody.sender.login,
+                    repo_name: reqBody.repository.full_name,
+                    event: eventHeader,
+                    action: reqBody.action
                 },
                 token
             }
 
             admin.messaging().send(message)
-                .then(() => { console.log(`Messaged ${token} successfully`)})
                 .catch(error => { console.error(error) })
         })
     })
@@ -68,13 +59,6 @@ const getSubTokens = (eventHeader, reqBody) =>
         })
     })
 
-const isItemInArray = (item, arr) => {
-    for (let i = 0; i < arr.length; i++) {
-        if (arr[i] === item) return true
-    }
-    return false
-}
-
 const getSubNames = (eventHeader, reqBody) =>
     new Promise(resolve => {
         admin.database().ref(
@@ -88,6 +72,13 @@ const getSubNames = (eventHeader, reqBody) =>
            resolve(snapshot.val())
         })
     })
+
+const isItemInArray = (item, arr) => {
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i] === item) return true
+    }
+    return false
+}
 
 const server = functions.https.onRequest(app)
 
