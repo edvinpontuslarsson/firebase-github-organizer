@@ -57,7 +57,15 @@ const setHooks = async org => {
   // TODO: get hooks, if none set
 
   // do this every time user enters org page
+
+  /////////////////////////////////////////////////////
+
+  // TODO: OBS!!!!!!!!!!!!!!!!!!!!
   
+  // also set (if none) when user sets settings to have hooks,
+
+  ////////////////////////////////////////////////
+
   const serverURL = await storage.getServerURL()
 
   const hookPostObj = {
@@ -89,7 +97,7 @@ const setHooks = async org => {
  * language: programming language,
  * license: { name: - }
  * name: name of repo,
- * releases_url: -,
+ * releases_url: result: [{ tag_name, name, body, published_at }],
  * issues_url: result: [{ state, title, updated_at, body, user: {login} }],
  * commits_url: -,
  * url: url to this repo

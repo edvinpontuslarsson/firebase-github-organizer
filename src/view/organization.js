@@ -36,8 +36,8 @@ const appendAndGetOrgDiv = (section, repos) => {
   const orgDiv = document.createElement('div')
   section.appendChild(orgDiv)
 
-  repos.forEach(repo => {
-    appendRepoDiv(orgDiv, repo)
+  repos.forEach(async repo => {
+    await appendRepoDiv(orgDiv, repo)
   })
 
   return orgDiv
@@ -47,7 +47,7 @@ const appendAndGetOrgDiv = (section, repos) => {
  * @param {HTMLElement} orgDiv 
  * @param {Object} repo repo data object
  */
-const appendRepoDiv = (orgDiv, repo) => {
+const appendRepoDiv = async (orgDiv, repo) => {
   const repoDiv = document.createElement('div')
   orgDiv.appendChild(repoDiv)
 
@@ -66,22 +66,50 @@ const appendRepoDiv = (orgDiv, repo) => {
   `
   repoDiv.appendChild(info)
 
-  appendReleasesDiv(repoDiv, repo.releases_url)
-  appendIssuesDiv(repoDiv, repo.issues_url)
-  appendCommitsDiv(repoDiv, repo.commits_url)
+  await appendReleasesDiv(repoDiv, repo.releases_url)
+  await appendIssuesDiv(repoDiv, repo.issues_url)
+  await appendCommitsDiv(repoDiv, repo.commits_url)
 }
 
 /**
  * @param {HTMLElement} repoDiv 
  * @param {Array} releases 
  */
-const appendReleasesDiv = (repoDiv, releasesURL) => {
-  // TODO: implement this
+const appendReleasesDiv = async (repoDiv, releasesURL) => {
+  const releasesDiv = document.createElement('div')
+  repoDiv.appendChild(releasesDiv)
+
+  const releasesHeader = document.createElement('h3')
+  releasesHeader.innerText = 'Releases'
+  releasesDiv.appendChild(releasesHeader)
+
+  const releases =
+    await githubDAL.fetchFromRepoURL(releasesURL)
+
+  releases.forEach(release => {
+    appendOneReleaseDiv(releasesDiv, release)
+  })
+}
+
+const appendOneReleaseDiv = (releasesDiv, release) => {
+  const releaseDiv = document.createElement('div')
+  releaseDiv.innerHTML = `
+    <h4>${xss(release.name)} ${xss(release.tag_name)}</h4>
+    <p>
+      Published at: ${xss(release.published_at)} <br>
+      ${release.body}
+    </p>
+  `
+  releasesDiv.appendChild(releaseDiv)
 }
 
 const appendIssuesDiv = async (repoDiv, issuesURL) => {
   const issuesDiv = document.createElement('div')
   repoDiv.appendChild(issuesDiv)
+
+  const issuesHeader = document.createElement('h3')
+  issuesHeader.innerText = 'Issues'
+  issuesDiv.appendChild(issuesHeader)
 
   const issues =
     await githubDAL.fetchFromRepoURL(issuesURL)
@@ -99,12 +127,12 @@ const appendOneIssueDiv = (issuesDiv, issue) => {
       State: ${xss(issue.state)} ${xss(issue.updated_at)}
       <br> Created by: ${xss(issue.user.login)}
     </p>
-    <p>${xss(issue.body)}
+    <p>${xss(issue.body)}</p>
   `
   issuesDiv.appendChild(issueDiv)
 }
 
-const appendCommitsDiv = (repoDiv, commitsURL) => {
+const appendCommitsDiv = async (repoDiv, commitsURL) => {
   // TODO: implement this
 }
 
