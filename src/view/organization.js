@@ -60,7 +60,7 @@ const appendRepoDiv = (orgDiv, repo) => {
 
   const info = document.createElement('p')
   info.innerHTML = `
-    Language: ${xss(repo.language)} License: ${xss(repo.license.name)} <br>
+    Language: ${xss(repo.language)} <br>
     Description: ${xss(repo.description)} <br>
     Created at: ${xss(repo.created_at)}
   `
