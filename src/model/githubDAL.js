@@ -83,15 +83,15 @@ const setHooks = async org => {
  * @returns {Object} objects, some props:
  * created_at: -,
  * description: -,
- * fetched_commits: [{}],
- * fetched_issues: [{ state, title, created_at, body, user: {login} }],
- * fetched_releases: [{}]
  * has_issues: bool,
  * issues_url: -,
  * hooks_url: -,
  * language: programming language,
  * license: { name: - }
  * name: name of repo,
+ * releases_url: -,
+ * issues_url: result: [{ state, title, updated_at, body, user: {login} }],
+ * commits_url: -,
  * url: url to this repo
  */
 const fetchOrgRepoData = org =>
@@ -107,12 +107,6 @@ const fetchOrgRepoData = org =>
     }
 
     const repoArr = await reposRes.json()
-
-    repoArr.forEach(async repo => {
-      repo.fetched_releases = await fetchFromRepoURL(repo.releases_url)
-      repo.fetched_issues = await fetchFromRepoURL(repo.issues_url)
-      repo.fetched_commits = await fetchFromRepoURL(repo.commits_url)
-    }) 
 
     resolve(repoArr)
   })
@@ -146,5 +140,6 @@ const getAuthHeaders = () => {
 
 export default {
   fetchOrgs,
-  fetchOrgRepoData
+  fetchOrgRepoData,
+  fetchFromRepoURL
 }

@@ -66,31 +66,45 @@ const appendRepoDiv = (orgDiv, repo) => {
   `
   repoDiv.appendChild(info)
 
-  appendReleasesDiv(repoDiv, repo.fetched_issues)
-  appendIssuesDiv(repoDiv, repo.fetched_issues)
-  appendCommitsDiv(repoDiv, repo.fetched_issues)
+  appendReleasesDiv(repoDiv, repo.releases_url)
+  appendIssuesDiv(repoDiv, repo.issues_url)
+  appendCommitsDiv(repoDiv, repo.commits_url)
 }
 
 /**
  * @param {HTMLElement} repoDiv 
  * @param {Array} releases 
  */
-const appendReleasesDiv = (repoDiv, releases) => {
+const appendReleasesDiv = (repoDiv, releasesURL) => {
   // TODO: implement this
 }
 
-const appendIssuesDiv = (repoDiv, issues) => {
+const appendIssuesDiv = async (repoDiv, issuesURL) => {
   const issuesDiv = document.createElement('div')
   repoDiv.appendChild(issuesDiv)
 
+  const issues =
+    await githubDAL.fetchFromRepoURL(issuesURL)
 
+  issues.forEach(issue => {
+    appendOneIssueDiv(issuesDiv, issue)
+  })
 }
 
 const appendOneIssueDiv = (issuesDiv, issue) => {
-
+  const issueDiv = document.createElement('div')
+  issueDiv.innerHTML = `
+    <h4>${xss(issue.title)}</h4>
+    <p>
+      State: ${xss(issue.state)} ${xss(issue.updated_at)}
+      <br> Created by: ${xss(issue.user.login)}
+    </p>
+    <p>${xss(issue.body)}
+  `
+  issuesDiv.appendChild(issueDiv)
 }
 
-const appendCommitsDiv = (repoDiv, releases) => {
+const appendCommitsDiv = (repoDiv, commitsURL) => {
   // TODO: implement this
 }
 
