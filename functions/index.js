@@ -12,7 +12,7 @@ app.use(cors({ origin: true }))
 
 app.post('/', (req, res) => {
   const eventHeader = req.headers['x-github-event']
-
+  
   const payload = JSON.parse(req.body.payload)
   
   if (eventHeader === 'ping') {
@@ -46,12 +46,13 @@ const notify = (eventHeader, payload) => {
           org_name: payload.repository.owner.login,
           repo_name: payload.repository.full_name,
           event: eventHeader,
-          action: payload.action
+          action: payload.action || ''
         },
         token
       }
 
       admin.messaging().send(message)
+        .then(() => { console.log('A message successfully sent') })
         .catch(error => { console.error(error) })
     })
   })
@@ -74,17 +75,10 @@ const getSubTokens = (eventHeader, payload) =>
 
 const getSubNames = (eventHeader, payload) =>
   new Promise(resolve => {
-
-    console.log(payload)
-
     admin.database().ref(
       `organizations/${payload.repository.owner.login}/subscriptions/${eventHeader}`
     ).once('value', snapshot => {
-
-      console.log(snapshot.val())
-
       const result = snapshot.val()
-      
       const usernames = []
 
       for (const key in result) {
@@ -92,7 +86,7 @@ const getSubNames = (eventHeader, payload) =>
           result[`${key}`].username
         )
       }
-
+      
       resolve(usernames)
     })
   })
