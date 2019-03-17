@@ -49,6 +49,14 @@ const isSubscribed = (orgName, eventType) =>
     })
   })
 
+const isHooked = orgName => new Promise(resolve => {
+  db().ref(
+    `organizations/${orgName}/hooks`
+  ).once('value', snapshot => {
+    resolve(snapshot.exists())
+  })
+})
+
 const db = () => firebase.database()
 
 export default {
@@ -56,5 +64,6 @@ export default {
   storeToken,
   storeSubscription,
   removeSubscription,
-  isSubscribed
+  isSubscribed,
+  isHooked
 }

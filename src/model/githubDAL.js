@@ -52,36 +52,9 @@ const fetchOrgs = () =>
  * @param {Object} org organization object
  */
 const setHooks = async org => {
-  /// //////////////////////////////////////////////////
-
-  // TODO: OBS!!!!!!!!!!!!!!!!!!!!
-
-  // also set (if none) when user sets settings to have hooks,
-
-  /// /////////////////////////////////////////////
-
-  /**
-   *
-   * Paste in current obj here, set hook,
-   * compare to new hook
-   *
-   *  body: ReadableStream
-      bodyUsed: false
-      headers: Headers {}
-      ok: true
-      redirected: false
-      status: 200
-      statusText: "OK"
-      type: "cors"
-      url: "https://api.github.com/orgs/gitedvinhub/hooks"
-
-      Later, test delete hook & set again
-   */
-
-  const hooks = await fetchHooks(org)
-  console.log(hooks)
-  // if (hooks.length === 0) {
-  /*
+  const isHooked = await storage.isHooked(org.login)
+  console.log(isHooked)
+  if (!isHooked) {
     const serverURL = await storage.getServerURL()
 
     const hookPostObj = {
@@ -101,14 +74,12 @@ const setHooks = async org => {
 
     const hookPost = JSON.stringify(hookPostObj)
 
-    const response = await window.fetch(`${org.hooks_url}`, {
+    await window.fetch(`${org.hooks_url}`, {
       method: 'POST',
       headers: getAuthHeaders(),
       body: hookPost
     })
-
-    console.log(response) */
-  // }
+  }
 }
 
 /**
