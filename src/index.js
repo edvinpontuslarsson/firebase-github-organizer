@@ -5,4 +5,3 @@ import loginView from './view/login'
 
 app.initialize()
 loginView.renderLoginView()
-

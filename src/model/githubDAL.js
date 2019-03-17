@@ -32,7 +32,7 @@ const fetchOrgs = () =>
     for (let i = 0; i < allOrgs.length; i++) {
       try {
         const orgHooksRes = await fetchHooks(allOrgs[i])
-        
+
         // ignores organizations without user access to hooks
         if (orgHooksRes.ok) {
           accessibleOrgs.push(allOrgs[i])
@@ -43,7 +43,7 @@ const fetchOrgs = () =>
         )
       }
     }
-    
+
     resolve(accessibleOrgs)
   })
 
@@ -52,21 +52,19 @@ const fetchOrgs = () =>
  * @param {Object} org organization object
  */
 const setHooks = async org => {
-
-  /////////////////////////////////////////////////////
+  /// //////////////////////////////////////////////////
 
   // TODO: OBS!!!!!!!!!!!!!!!!!!!!
-  
+
   // also set (if none) when user sets settings to have hooks,
 
-  ////////////////////////////////////////////////
-
+  /// /////////////////////////////////////////////
 
   /**
-   * 
+   *
    * Paste in current obj here, set hook,
    * compare to new hook
-   * 
+   *
    *  body: ReadableStream
       bodyUsed: false
       headers: Headers {}
@@ -83,7 +81,7 @@ const setHooks = async org => {
   const hooks = await fetchHooks(org)
   console.log(hooks)
   // if (hooks.length === 0) {
-    /*
+  /*
     const serverURL = await storage.getServerURL()
 
     const hookPostObj = {
@@ -102,14 +100,14 @@ const setHooks = async org => {
     }
 
     const hookPost = JSON.stringify(hookPostObj)
-    
+
     const response = await window.fetch(`${org.hooks_url}`, {
       method: 'POST',
       headers: getAuthHeaders(),
       body: hookPost
     })
 
-    console.log(response)*/
+    console.log(response) */
   // }
 }
 
@@ -140,9 +138,9 @@ const fetchOrgRepoData = org =>
   new Promise(async (resolve, reject) => {
     const reposRes =
         await window.fetch(org.repos_url, {
-          method: 'GET',
-          headers: getAuthHeaders()
-        })
+        method: 'GET',
+        headers: getAuthHeaders()
+      })
     if (!reposRes.ok) {
       console.log(await reposRes.json())
       return resolve({}) // empty {}

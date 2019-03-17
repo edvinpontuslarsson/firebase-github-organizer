@@ -20,7 +20,7 @@ const renderOrgView = async (userData, allOrgs, org) => {
   )
 
   githubDAL.setHooks(org)
-  
+
   const firebaseMessaging = messaging.getFirebaseMessaging()
   firebaseMessaging.onMessage(payload => {
     if (payload.data.org_name === org.login &&
@@ -42,7 +42,7 @@ const appendAndGetOrgDiv = (section, repos) => {
 }
 
 /**
- * @param {HTMLElement} orgDiv 
+ * @param {HTMLElement} orgDiv
  * @param {Object} repo repo data object
  */
 const appendRepoDiv = async (orgDiv, repo) => {
@@ -51,9 +51,9 @@ const appendRepoDiv = async (orgDiv, repo) => {
   orgDiv.appendChild(repoDiv)
 
   const repoHeader = document.createElement('h2')
-  const repoURL = 
+  const repoURL =
     repo.url.replace('api.', '').replace('/repos', '')
-  repoHeader.innerHTML = 
+  repoHeader.innerHTML =
       `<a href="${repoURL}">${xss(repo.name)}</a>`
   repoDiv.appendChild(repoHeader)
 
@@ -71,8 +71,8 @@ const appendRepoDiv = async (orgDiv, repo) => {
 }
 
 /**
- * @param {HTMLElement} repoDiv 
- * @param {Array} releases 
+ * @param {HTMLElement} repoDiv
+ * @param {Array} releases
  */
 const appendReleasesDiv = async (repoDiv, releasesURL) => {
   const releasesDiv = document.createElement('div')
@@ -164,4 +164,3 @@ const appendOneCommitDiv = (commitsDiv, commit) => {
 }
 
 export default { renderOrgView }
-

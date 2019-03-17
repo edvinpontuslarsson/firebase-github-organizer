@@ -23,7 +23,7 @@ const renderLoginView = () => {
 }
 
 /**
- * @param {HTMLElement} loginBtn 
+ * @param {HTMLElement} loginBtn
  * @param {HTMLElement} section - content section
  */
 const login = async (loginBtn, section) => {
@@ -46,7 +46,7 @@ const login = async (loginBtn, section) => {
 
 const renderAndGetSpinnerDiv = () => {
   const spinnerDiv = document.createElement('div')
-  spinnerDiv.innerHTML = 
+  spinnerDiv.innerHTML =
   `
     <p id="spinner-info">Fetching GitHub data, please wait...</p>
     <div class="spinner"></div>

@@ -6,7 +6,7 @@ import auth from './auth'
 
 /**
  * Overwrites any existing token for user
- * @param {String} token 
+ * @param {String} token
  */
 const storeToken = token => {
   const username = auth.getUsername()
