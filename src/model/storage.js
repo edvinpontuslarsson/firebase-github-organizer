@@ -57,6 +57,9 @@ const isHooked = orgName => new Promise(resolve => {
   })
 })
 
+const getOrgUpdatesRef = () => 
+  db().ref().child(`organizations/updates`)
+
 const db = () => firebase.database()
 
 export default {
@@ -65,5 +68,6 @@ export default {
   storeSubscription,
   removeSubscription,
   isSubscribed,
-  isHooked
+  isHooked,
+  getOrgUpdatesRef
 }

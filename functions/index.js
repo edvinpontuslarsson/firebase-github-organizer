@@ -17,11 +17,14 @@ app.post('/', (req, res) => {
   
   if (eventHeader === 'ping') {
     storeOrgHook(payload)
+    
     return res.sendStatus(200)
   } else if (eventHeader === 'repository' ||
         eventHeader === 'release' ||
         eventHeader === 'issues' ||
         eventHeader === 'push') {
+
+    update(payload)
     notify(eventHeader, payload)
 
     return res.sendStatus(200)
@@ -38,6 +41,14 @@ const storeOrgHook = payload => {
   ).set({ id: payload.hook_id })
 }
 
+const update = payload => {
+  const orgName = payload.organization.login
+
+  admin.database().ref(
+    `organizations/updates/${orgName}`
+  ).set({ newest_update_date: Date.now() })
+}
+
 const notify = (eventHeader, payload) => {
   getSubTokens(eventHeader, payload).then(tokens => {
     tokens.forEach(token => {
@@ -52,7 +63,6 @@ const notify = (eventHeader, payload) => {
       }
 
       admin.messaging().send(message)
-        .then(() => { console.log('A message successfully sent') })
         .catch(error => { console.error(error) })
     })
   })
