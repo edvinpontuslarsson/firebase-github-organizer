@@ -1,9 +1,14 @@
 'use strict'
 
-const eventHeader = 
+const obj =
+{ edvinpontuslarsson: { username: 'edvinpontuslarsson' }, test_user: { username: 'test_user' } }
+const usernames = []
 
-if (eventHeader && eventHeader === 'ping') {
+for (const key in obj) {
+        usernames.push(
+                obj[`${key}`].username
+        )
+}
 
-        }
+console.log(usernames)
 
-console.log('still works?')

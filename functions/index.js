@@ -14,7 +14,7 @@ app.post('/', (req, res) => {
   const eventHeader = req.headers['x-github-event']
 
   const payload = JSON.parse(req.body.payload)
-  console.log(payload)
+  
   if (eventHeader === 'ping') {
     storeOrgHook(payload)
     return res.sendStatus(200)
@@ -38,15 +38,15 @@ const storeOrgHook = payload => {
   ).set({ id: payload.hook_id })
 }
 
-const notify = (eventHeader, reqBody) => {
-  getSubTokens(eventHeader, reqBody).then(tokens => {
+const notify = (eventHeader, payload) => {
+  getSubTokens(eventHeader, payload).then(tokens => {
     tokens.forEach(token => {
       const message = {
         data: {
-          org_name: reqBody.sender.login,
-          repo_name: reqBody.repository.full_name,
+          org_name: payload.repository.owner.login,
+          repo_name: payload.repository.full_name,
           event: eventHeader,
-          action: reqBody.action
+          action: payload.action
         },
         token
       }
@@ -57,9 +57,9 @@ const notify = (eventHeader, reqBody) => {
   })
 }
 
-const getSubTokens = (eventHeader, reqBody) =>
+const getSubTokens = (eventHeader, payload) =>
   new Promise(resolve => {
-    getSubNames(eventHeader, reqBody).then(subNames => {
+    getSubNames(eventHeader, payload).then(subNames => {
       admin.database().ref('tokens').once('value', snapshot => {
         const allTokens = snapshot.val()
 
@@ -72,17 +72,28 @@ const getSubTokens = (eventHeader, reqBody) =>
     })
   })
 
-const getSubNames = (eventHeader, reqBody) =>
+const getSubNames = (eventHeader, payload) =>
   new Promise(resolve => {
+
+    console.log(payload)
+
     admin.database().ref(
-      `organizations/${reqBody.sender.login}/subscriptions/${eventHeader}`
+      `organizations/${payload.repository.owner.login}/subscriptions/${eventHeader}`
     ).once('value', snapshot => {
-      const usernames = Object.values(snapshot.val())
-        .map(item => item.username)
+
+      console.log(snapshot.val())
+
+      const result = snapshot.val()
+      
+      const usernames = []
+
+      for (const key in result) {
+        usernames.push(
+          result[`${key}`].username
+        )
+      }
 
       resolve(usernames)
-
-      resolve(snapshot.val())
     })
   })
 
