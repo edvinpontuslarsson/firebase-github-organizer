@@ -47,6 +47,7 @@ const appendAndGetOrgDiv = (section, repos) => {
  */
 const appendRepoDiv = async (orgDiv, repo) => {
   const repoDiv = document.createElement('div')
+  repoDiv.classList.add('repo-div')
   orgDiv.appendChild(repoDiv)
 
   const repoHeader = document.createElement('h2')
@@ -75,6 +76,7 @@ const appendRepoDiv = async (orgDiv, repo) => {
  */
 const appendReleasesDiv = async (repoDiv, releasesURL) => {
   const releasesDiv = document.createElement('div')
+  releasesDiv.classList.add('releases-div')
   repoDiv.appendChild(releasesDiv)
 
   const releasesHeader = document.createElement('h3')
@@ -91,6 +93,7 @@ const appendReleasesDiv = async (repoDiv, releasesURL) => {
 
 const appendOneReleaseDiv = (releasesDiv, release) => {
   const releaseDiv = document.createElement('div')
+  releaseDiv.classList.add('one-release-div')
   releaseDiv.innerHTML = `
     <h4>${xss(release.name)} ${xss(release.tag_name)}</h4>
     <p>
@@ -103,6 +106,7 @@ const appendOneReleaseDiv = (releasesDiv, release) => {
 
 const appendIssuesDiv = async (repoDiv, issuesURL) => {
   const issuesDiv = document.createElement('div')
+  issuesDiv.classList.add('issues-div')
   repoDiv.appendChild(issuesDiv)
 
   const issuesHeader = document.createElement('h3')
@@ -119,6 +123,7 @@ const appendIssuesDiv = async (repoDiv, issuesURL) => {
 
 const appendOneIssueDiv = (issuesDiv, issue) => {
   const issueDiv = document.createElement('div')
+  issueDiv.classList.add('one-issue-div')
   issueDiv.innerHTML = `
     <h4>${xss(issue.title)}</h4>
     <p>
@@ -132,6 +137,7 @@ const appendOneIssueDiv = (issuesDiv, issue) => {
 
 const appendCommitsDiv = async (repoDiv, commitsURL) => {
   const commitsDiv = document.createElement('div')
+  commitsDiv.classList.add('commits-div')
   repoDiv.appendChild(commitsDiv)
 
   const commitsHeader = document.createElement('h3')
@@ -148,6 +154,7 @@ const appendCommitsDiv = async (repoDiv, commitsURL) => {
 
 const appendOneCommitDiv = (commitsDiv, commit) => {
   const commitDiv = document.createElement('div')
+  commitDiv.classList.add('one-commit-div')
   commitDiv.innerHTML = `
     <h4>${xss(commit.commit.message)}</h4>
     By ${xss(commit.commit.author.name)} 
