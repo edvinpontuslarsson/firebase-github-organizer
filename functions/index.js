@@ -13,7 +13,12 @@ app.use(cors({ origin: true }))
 app.post('/', (req, res) => {
     const eventHeader = req.headers['x-github-event']
     
-    if (eventHeader === 'repository' ||
+    if (eventHeader === 'ping' &&
+        req.body.hook.type === 'Organization') {
+            storeOrgHook(req.body)
+    } 
+    
+    else if (eventHeader === 'repository' ||
         eventHeader === 'release' ||
         eventHeader === 'issues' ||
         eventHeader === 'push') {
@@ -24,6 +29,10 @@ app.post('/', (req, res) => {
             return res.sendStatus(200)
         } 
 })
+
+const storeOrgHook = reqBody => {
+    
+}
 
 const notify = (eventHeader, reqBody) => {
     getSubTokens(eventHeader, reqBody).then(tokens => {

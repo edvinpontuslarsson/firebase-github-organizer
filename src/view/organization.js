@@ -19,7 +19,7 @@ const renderOrgView = async (userData, allOrgs, org) => {
     orgDiv.firstChild
   )
 
-  // TODO: set hooks here
+  githubDAL.setHooks(org)
   
   const firebaseMessaging = messaging.getFirebaseMessaging()
   firebaseMessaging.onMessage(payload => {

@@ -3,6 +3,7 @@
 import contentSection from './contentSection'
 import menu from './menu'
 import storage from '../model/storage'
+import githubDAL from '../model/githubDAL'
 
 const renderSettingsView = (userData, orgs) => {
     const section = contentSection.getClearedContentSection()
@@ -95,6 +96,7 @@ const changeSubscriptionSetting = async (userData, allorgs, org, eventType, isNo
         await storage.removeSubscription(org.login, eventType)
     } else {
         await storage.storeSubscription(org.login, eventType)
+        githubDAL.setHooks(org)
     }
 
     // re-renders page

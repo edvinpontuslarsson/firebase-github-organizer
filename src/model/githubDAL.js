@@ -23,7 +23,7 @@ const fetchOrgs = () =>
         await window.fetch(orgsURL, getGETReqObj())
     if (!orgsRes.ok) {
       console.log(await orgsRes.json())
-      return resolve({}) // empty {}
+      return resolve([]) // empty []
     }
 
     const allOrgs = await orgsRes.json()
@@ -32,7 +32,7 @@ const fetchOrgs = () =>
     for (let i = 0; i < allOrgs.length; i++) {
       try {
         const orgHooksRes = await fetchHooks(allOrgs[i])
-
+        
         // ignores organizations without user access to hooks
         if (orgHooksRes.ok) {
           accessibleOrgs.push(allOrgs[i])
@@ -47,16 +47,11 @@ const fetchOrgs = () =>
     resolve(accessibleOrgs)
   })
 
-const fetchHooks = org => window.fetch(org.hooks_url, getGETReqObj())
-
-/**  
- * 
+/**
+ * Sets hooks if there is none
+ * @param {Object} org organization object
  */
 const setHooks = async org => {
-  
-  // TODO: get hooks, if none set
-
-  // do this every time user enters org page
 
   /////////////////////////////////////////////////////
 
@@ -66,24 +61,66 @@ const setHooks = async org => {
 
   ////////////////////////////////////////////////
 
-  const serverURL = await storage.getServerURL()
 
-  const hookPostObj = {
-    name: 'web',
-    active: 'true',
-    events: [
-      'repository',
-      'release',
-      'issues',
-      'push'
-    ],
-    config: {
-      url: serverURL,
-      content_type: 'json'
+  /**
+   * 
+   * Paste in current obj here, set hook,
+   * compare to new hook
+   * 
+   *  body: ReadableStream
+      bodyUsed: false
+      headers: Headers {}
+      ok: true
+      redirected: false
+      status: 200
+      statusText: "OK"
+      type: "cors"
+      url: "https://api.github.com/orgs/gitedvinhub/hooks"
+
+      Later, test delete hook & set again
+   */
+
+  const hooks = await fetchHooks(org)
+  console.log(hooks)
+  // if (hooks.length === 0) {
+    /*
+    const serverURL = await storage.getServerURL()
+
+    const hookPostObj = {
+      name: 'web',
+      active: true,
+      events: [
+        'repository',
+        'release',
+        'issues',
+        'push'
+      ],
+      config: {
+        url: serverURL,
+        content_type: 'application/json'
+      }
     }
-  }
 
-  const hookPost = JSON.stringify(hookPostObj)
+    const hookPost = JSON.stringify(hookPostObj)
+    
+    const response = await window.fetch(`${org.hooks_url}`, {
+      method: 'POST',
+      headers: getAuthHeaders(),
+      body: hookPost
+    })
+
+    console.log(response)*/
+  // }
+}
+
+/**
+ * @param {Object} org required - organization object
+ * @param {number} id optional - id of specific hook
+ * @returns {Promise<Array<string>>}
+ */
+const fetchHooks = (org, id) => {
+  const hooksURL = id ? `${org.hooks_url}/${id}` : org.hooks_url
+  return window.fetch(hooksURL, getGETReqObj())
 }
 
 /**
@@ -91,8 +128,6 @@ const setHooks = async org => {
  * @returns {Object} objects, some props:
  * created_at: -,
  * description: -,
- * has_issues: bool,
- * issues_url: -,
  * hooks_url: -,
  * language: programming language,
  * name: name of repo,
@@ -148,5 +183,6 @@ const getAuthHeaders = () => {
 export default {
   fetchOrgs,
   fetchOrgRepoData,
-  fetchFromRepoURL
+  fetchFromRepoURL,
+  setHooks
 }
