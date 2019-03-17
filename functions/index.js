@@ -12,18 +12,17 @@ app.use(cors({ origin: true }))
 
 app.post('/', (req, res) => {
   const eventHeader = req.headers['x-github-event']
-  
+
   const payload = JSON.parse(req.body.payload)
-  
+
   if (eventHeader === 'ping') {
     storeOrgHook(payload)
-    
+
     return res.sendStatus(200)
   } else if (eventHeader === 'repository' ||
         eventHeader === 'release' ||
         eventHeader === 'issues' ||
         eventHeader === 'push') {
-
     update(payload)
     notify(eventHeader, payload)
 
@@ -96,7 +95,7 @@ const getSubNames = (eventHeader, payload) =>
           result[`${key}`].username
         )
       }
-      
+
       resolve(usernames)
     })
   })

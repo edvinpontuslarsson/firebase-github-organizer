@@ -4,18 +4,14 @@
 
 Project is live at: https://gitedvinhub.firebaseapp.com
 
-Post url to cloud functions:
-```
-https://us-central1-gitedvinhub.cloudfunctions.net/server/
-```
-
 To generate main.js in dist: <br>
 npm run build
 
-```
-npm start # instead of firebase serve, for now
-```
+To run webpack dev server: <br>
+npm start
 
-firebase serve   # starts development server, (you might have to use sudo)
+Starts firebase dev server (you might not need sudo): <br>
+sudo firebase serve
 
-firebase deploy # deploys
+To deploy to firebase: <br>
+firebase deploy

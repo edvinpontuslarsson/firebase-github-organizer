@@ -53,7 +53,7 @@ const fetchOrgs = () =>
  */
 const setHooks = async org => {
   const isHooked = await storage.isHooked(org.login)
-  
+
   if (!isHooked) {
     const serverURL = await storage.getServerURL()
 
