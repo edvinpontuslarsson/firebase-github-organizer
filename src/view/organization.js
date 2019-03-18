@@ -46,7 +46,7 @@ const appendRepoDiv = async (orgDiv, repo) => {
   const repoURL =
     repo.url.replace('api.', '').replace('/repos', '')
   repoHeader.innerHTML =
-      `<a href="${repoURL}">${xss(repo.name)}</a>`
+      `<a href="${repoURL}" target="_blank">${xss(repo.name)}</a>`
   repoDiv.appendChild(repoHeader)
 
   const info = document.createElement('p')
