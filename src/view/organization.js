@@ -3,7 +3,6 @@
 import contentSection from './contentSection'
 import menu from './menu'
 import githubDAL from '../model/githubDAL'
-import storage from '../model/storage'
 import xss from 'xss'
 
 const renderOrgView = async (userData, allOrgs, org) => {
@@ -42,12 +41,15 @@ const appendRepoDiv = async (orgDiv, repo) => {
   repoDiv.classList.add('repo-div')
   orgDiv.appendChild(repoDiv)
 
+  const infoDiv = document.createElement('div')
+  infoDiv.classList.add('info-div')
+
   const repoHeader = document.createElement('h2')
   const repoURL =
     repo.url.replace('api.', '').replace('/repos', '')
   repoHeader.innerHTML =
       `<a href="${repoURL}" target="_blank">${xss(repo.name)}</a>`
-  repoDiv.appendChild(repoHeader)
+  infoDiv.appendChild(repoHeader)
 
   const info = document.createElement('p')
   info.innerHTML = `
@@ -55,11 +57,17 @@ const appendRepoDiv = async (orgDiv, repo) => {
     Description: ${xss(repo.description)} <br>
     Created at: ${xss(repo.created_at)}
   `
-  repoDiv.appendChild(info)
+  infoDiv.appendChild(info)
 
-  await appendReleasesDiv(repoDiv, repo.releases_url)
-  await appendIssuesDiv(repoDiv, repo.issues_url)
-  await appendCommitsDiv(repoDiv, repo.commits_url)
+  repoDiv.appendChild(infoDiv)
+
+  const eventsDiv = document.createElement('div')
+  eventsDiv.classList.add('events-div')
+  repoDiv.appendChild(eventsDiv)
+
+  await appendReleasesDiv(eventsDiv, repo.releases_url)
+  await appendIssuesDiv(eventsDiv, repo.issues_url)
+  await appendCommitsDiv(eventsDiv, repo.commits_url)
 }
 
 /**
@@ -87,10 +95,10 @@ const appendOneReleaseDiv = (releasesDiv, release) => {
   const releaseDiv = document.createElement('div')
   releaseDiv.classList.add('one-release-div')
   releaseDiv.innerHTML = `
-    <h4>${xss(release.name)} ${xss(release.tag_name)}</h4>
+    <b>${xss(release.tag_name)} ${xss(release.name)}</b>
     <p>
-      Published at: ${xss(release.published_at)} <br>
-      ${release.body}
+      ${release.body} <br>
+      ${xss(release.published_at)}
     </p>
   `
   releasesDiv.appendChild(releaseDiv)
@@ -117,10 +125,11 @@ const appendOneIssueDiv = (issuesDiv, issue) => {
   const issueDiv = document.createElement('div')
   issueDiv.classList.add('one-issue-div')
   issueDiv.innerHTML = `
-    <h4>${xss(issue.title)}</h4>
+    <b>${xss(issue.title)}</b>
     <p>
-      ${xss(issue.updated_at)} State: ${xss(issue.state)}
+      State: ${xss(issue.state)}
       <br> Created by: ${xss(issue.user.login)}
+      <br> ${xss(issue.updated_at)}
     </p>
     <p>${xss(issue.body)}</p>
   `
@@ -148,9 +157,9 @@ const appendOneCommitDiv = (commitsDiv, commit) => {
   const commitDiv = document.createElement('div')
   commitDiv.classList.add('one-commit-div')
   commitDiv.innerHTML = `
-    <h4>${xss(commit.commit.message)}</h4>
+    <b>${xss(commit.commit.message)}</b><br>
     By ${xss(commit.commit.author.name)} 
-    at ${xss(commit.commit.author.date)}
+    <br> ${xss(commit.commit.author.date)}
   `
   commitsDiv.appendChild(commitDiv)
 }
