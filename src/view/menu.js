@@ -5,8 +5,6 @@ import home from './home'
 import settings from './settings'
 import auth from '../model/auth'
 
-// can later append to this div
-
 const getMenuDiv = (userData, orgs) => {
   const logOutBtn = document.createElement('button')
   logOutBtn.innerText = 'Log out'

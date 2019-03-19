@@ -6,16 +6,12 @@ import auth from './auth'
 
 /**
  * Overwrites any existing token for user
- * @param {String} token
  */
 const storeToken = token => {
   const username = auth.getUsername()
   db().ref(`tokens/${username}`).set({ token })
 }
 
-/**
- * @returns {Promise<String>}
- */
 const getServerURL = () => new Promise(resolve => {
   db().ref('server_url').once('value', snapshot => {
     resolve(snapshot.val())
@@ -38,6 +34,9 @@ const removeSubscription = (orgName, eventType) => {
   ).remove()
 }
 
+/**
+ * @returns {Promise<boolean>}
+ */
 const isSubscribed = (orgName, eventType) =>
   new Promise(async resolve => {
     const username = auth.getUsername()
@@ -49,6 +48,9 @@ const isSubscribed = (orgName, eventType) =>
     })
   })
 
+/**
+ * @returns {Promise<boolean>}
+ */
 const isHooked = orgName => new Promise(resolve => {
   db().ref(
     `organizations/${orgName}/hooks`

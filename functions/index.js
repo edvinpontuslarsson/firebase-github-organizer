@@ -23,8 +23,8 @@ app.post('/', (req, res) => {
         eventHeader === 'release' ||
         eventHeader === 'issues' ||
         eventHeader === 'push') {
-    update(payload)
-    notify(eventHeader, payload)
+    updateDb(payload)
+    sendNotification(eventHeader, payload)
 
     return res.sendStatus(200)
   } else {
@@ -40,7 +40,7 @@ const storeOrgHook = payload => {
   ).set({ id: payload.hook_id })
 }
 
-const update = payload => {
+const updateDb = payload => {
   const orgName = payload.organization.login
 
   admin.database().ref(
@@ -48,7 +48,7 @@ const update = payload => {
   ).set({ newest_update_date: Date.now() })
 }
 
-const notify = (eventHeader, payload) => {
+const sendNotification = (eventHeader, payload) => {
   getSubTokens(eventHeader, payload).then(tokens => {
     tokens.forEach(token => {
       const message = {

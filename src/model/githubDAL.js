@@ -11,7 +11,6 @@ import storage from './storage'
     hooks_url: -,
     issues_url: -,
     login: title of org,
-    members_url: -,
     repos_url: -,
     url: url to this org
  */
@@ -48,7 +47,7 @@ const fetchOrgs = () =>
   })
 
 /**
- * Sets hooks if there is none
+ * Sets hooks if there are none
  * @param {Object} org organization object
  */
 const setHooks = async org => {
@@ -124,7 +123,7 @@ const fetchOrgRepoData = org =>
 
 /**
  * @param {String} repoURL url from github res obj
- * @returns {Array}
+ * @returns {Promise<Array<Object>>}
  */
 const fetchFromRepoURL = repoURL =>
   new Promise(async resolve => {

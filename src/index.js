@@ -17,7 +17,7 @@ orgUpdatesRef.on('value', async snapshot => {
   if (snapshot.exists()) {
     const orgName = Object.keys(snapshot.val())[0]
 
-    // is organization page active?
+    // if organization page is active
     if (document.getElementById(`org-view-${orgName}-div`)) {
       const userData = await auth.getUserData()
       const allOrgs = await githubDAL.fetchOrgs()
