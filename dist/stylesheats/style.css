@@ -24,7 +24,17 @@ button {
     padding: 5px 15px;
     cursor: pointer;
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 1vw;
+    font-size: 1.5vw;
+}
+
+.org-avatar {
+    float:left;
+    height: 5vw;
+    margin-right: 2vw;
+}
+
+.org-header {
+    padding: 1vw;
 }
 
 .repo-div {
