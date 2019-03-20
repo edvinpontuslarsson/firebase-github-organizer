@@ -39,8 +39,15 @@ const listenForUpdates = (org, orgDiv) => {
     storage.getOrgUpdatesRef(org.login, 'release')
 
   repoOrgUpdatesRef.on('value', snapshot => {
+    console.log('gets here?')
     if (isOrgPageUpdateReady(snapshot, org)) {
-      console.log('repo update')
+      console.log(snapshot.val())
+      const payload = snapshot.val()
+      if (payload.action === 'created') {
+        appendRepoDiv(
+          orgDiv, payload.repository
+        )
+      }
     }
   })
 }
@@ -81,8 +88,8 @@ const appendRepoDiv = async (orgDiv, repo) => {
 
   const info = document.createElement('p')
   info.innerHTML = `
-    Language: ${xss(repo.language)} <br>
-    Description: ${xss(repo.description)} <br>
+    Language: ${xss(repo.language) || ''} <br>
+    Description: ${xss(repo.description || '')} <br>
     Created at: ${xss(repo.created_at)}
   `
   infoDiv.appendChild(info)
