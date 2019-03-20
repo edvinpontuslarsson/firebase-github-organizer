@@ -3,6 +3,7 @@
 import contentSection from './contentSection'
 import menu from './menu'
 import githubDAL from '../model/githubDAL'
+import storage from '../model/storage'
 import xss from 'xss'
 
 const renderOrgView = async (userData, allOrgs, org) => {
@@ -19,6 +20,20 @@ const renderOrgView = async (userData, allOrgs, org) => {
   )
 
   githubDAL.setHooks(org)
+
+  listenForUpdates(org, orgDiv)
+}
+
+/**
+ * @param {*} org - organization data object
+ * @param {HTMLElement} orgDiv 
+ */
+const listenForUpdates = (org, orgDiv) => {
+  const orgUpdatesRef = storage.getOrgUpdatesRef()
+
+  orgUpdatesRef.on('value', snapshot => {
+    
+  })
 }
 
 const appendAndGetOrgDiv = (section, repos) => {
