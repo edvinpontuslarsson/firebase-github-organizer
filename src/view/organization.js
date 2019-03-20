@@ -3,7 +3,6 @@
 import contentSection from './contentSection'
 import menu from './menu'
 import githubDAL from '../model/githubDAL'
-import storage from '../model/storage'
 import xss from 'xss'
 
 const renderOrgView = async (userData, allOrgs, org) => {
@@ -20,41 +19,7 @@ const renderOrgView = async (userData, allOrgs, org) => {
   )
 
   githubDAL.setHooks(org)
-
-  listenForUpdates(org, orgDiv)
 }
-
-/**
- * @param {*} org - organization data object
- * @param {HTMLElement} orgDiv 
- */
-const listenForUpdates = (org, orgDiv) => {
-  const repoOrgUpdatesRef = 
-    storage.getOrgUpdatesRef(org.login, 'repository')
-  const issuesOrgUpdatesRef =
-    storage.getOrgUpdatesRef(org.login, 'issues')
-  const pushOrgUpdatesRef =
-    storage.getOrgUpdatesRef(org.login, 'push')
-  const releaseOrgUpdatesRef =
-    storage.getOrgUpdatesRef(org.login, 'release')
-
-  repoOrgUpdatesRef.on('value', snapshot => {
-    console.log('gets here?')
-    if (isOrgPageUpdateReady(snapshot, org)) {
-      console.log(snapshot.val())
-      const payload = snapshot.val()
-      if (payload.action === 'created') {
-        appendRepoDiv(
-          orgDiv, payload.repository
-        )
-      }
-    }
-  })
-}
-
-const isOrgPageUpdateReady = (snapshot, org) =>
-  snapshot.exists() &&
-  document.getElementById(`org-view-${org.login}-div`)
 
 const appendAndGetOrgDiv = (section, repos) => {
   const orgDiv = document.createElement('div')
@@ -88,8 +53,8 @@ const appendRepoDiv = async (orgDiv, repo) => {
 
   const info = document.createElement('p')
   info.innerHTML = `
-    Language: ${xss(repo.language) || ''} <br>
-    Description: ${xss(repo.description || '')} <br>
+    Language: ${xss(repo.language)} <br>
+    Description: ${xss(repo.description)} <br>
     Created at: ${xss(repo.created_at)}
   `
   infoDiv.appendChild(info)
@@ -122,13 +87,11 @@ const appendReleasesDiv = async (repoDiv, releasesURL) => {
     await githubDAL.fetchFromRepoURL(releasesURL)
 
   releases.forEach(release => {
-    releasesDiv.appendChild(
-      getOneReleaseDiv(release)
-    )
+    appendOneReleaseDiv(releasesDiv, release)
   })
 }
 
-const getOneReleaseDiv = release => {
+const appendOneReleaseDiv = (releasesDiv, release) => {
   const releaseDiv = document.createElement('div')
   releaseDiv.classList.add('one-release-div')
   releaseDiv.innerHTML = `
@@ -138,7 +101,7 @@ const getOneReleaseDiv = release => {
       ${xss(release.published_at)}
     </p>
   `
-  return releaseDiv
+  releasesDiv.appendChild(releaseDiv)
 }
 
 const appendIssuesDiv = async (repoDiv, issuesURL) => {
@@ -154,13 +117,11 @@ const appendIssuesDiv = async (repoDiv, issuesURL) => {
     await githubDAL.fetchFromRepoURL(issuesURL)
 
   issues.forEach(issue => {
-    issuesDiv.appendChild(
-      getOneIssueDiv(issue)
-    )
+    appendOneIssueDiv(issuesDiv, issue)
   })
 }
 
-const getOneIssueDiv = issue => {
+const appendOneIssueDiv = (issuesDiv, issue) => {
   const issueDiv = document.createElement('div')
   issueDiv.classList.add('one-issue-div')
   issueDiv.innerHTML = `
@@ -172,7 +133,7 @@ const getOneIssueDiv = issue => {
     </p>
     <p>${xss(issue.body)}</p>
   `
-  return issueDiv
+  issuesDiv.appendChild(issueDiv)
 }
 
 const appendCommitsDiv = async (repoDiv, commitsURL) => {
@@ -188,13 +149,11 @@ const appendCommitsDiv = async (repoDiv, commitsURL) => {
     await githubDAL.fetchFromRepoURL(commitsURL)
 
   commits.forEach(commit => {
-    commitsDiv.appendChild(
-      getOneCommitDiv(commit)
-    )
+    appendOneCommitDiv(commitsDiv, commit)
   })
 }
 
-const getOneCommitDiv = commit => {
+const appendOneCommitDiv = (commitsDiv, commit) => {
   const commitDiv = document.createElement('div')
   commitDiv.classList.add('one-commit-div')
   commitDiv.innerHTML = `
@@ -202,7 +161,7 @@ const getOneCommitDiv = commit => {
     By ${xss(commit.commit.author.name)} 
     <br> ${xss(commit.commit.author.date)}
   `
-  return commitDiv
+  commitsDiv.appendChild(commitDiv)
 }
 
 export default { renderOrgView }

@@ -59,9 +59,8 @@ const isHooked = orgName => new Promise(resolve => {
   })
 })
 
-const getOrgUpdatesRef = (orgName, eventType) =>
-  db().ref()
-  .child(`organizations/updates${orgName}/${eventType}`)
+const getOrgUpdatesRef = () =>
+  db().ref().child(`organizations/updates`)
 
 const db = () => firebase.database()
 
