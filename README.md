@@ -2,7 +2,7 @@
 
 [wiki](https://github.com/1dv612/el223na-examination/wiki)
 
-Project is live at: https://gitedvinhub.firebaseapp.com
+Project is currently not live.
 
 To generate main.js in dist: <br>
 npm run build
